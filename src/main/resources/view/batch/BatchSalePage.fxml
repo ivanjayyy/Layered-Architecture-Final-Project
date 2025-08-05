@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXBadge?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="940.0" prefWidth="1720.0" style="-fx-background-color: #e67e22;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.poultryfarm.controller.batch.BatchSalePageController">
+    <children>
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 20; -fx-background-color: white;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <HBox alignment="CENTER" prefHeight="130.0" prefWidth="1700.0">
+                <children>
+                    <Label text="BATCH SALE" textFill="GREY">
+                        <font>
+                            <Font name="Arial Black" size="54.0" />
+                        </font>
+                    </Label>
+                </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="116.0" prefWidth="1700.0" spacing="52.0">
+                <children>
+                  <JFXComboBox fx:id="searchBatchId" focusColor="WHITE" onAction="#searchBatchIdOnAction" prefHeight="54.0" prefWidth="193.0" promptText="Search Batch ID" style="-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 0 0 1px 0; -fx-font-size: 20px;" unFocusColor="WHITE" />
+                    <TextField fx:id="inputSearch" alignment="CENTER" editable="false" prefHeight="53.0" prefWidth="966.0" style="-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 0 0 1px 0;">
+                        <font>
+                            <Font name="Arial Rounded MT Bold" size="24.0" />
+                        </font></TextField>
+                    <JFXButton fx:id="btnSearch" buttonType="RAISED" onAction="#batchSaleSearchOnAction" prefHeight="53.0" prefWidth="173.0" style="-fx-background-color: #e67e22; -fx-background-radius: 20;" text="SEARCH" textFill="WHITE">
+                        <font>
+                            <Font name="Arial Rounded MT Bold" size="22.0" />
+                        </font>
+                     <graphic>
+                        <JFXBadge>
+                           <children>
+                              <ImageView fitHeight="38.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/icons8-search-64.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </JFXBadge>
+                     </graphic>
+                    </JFXButton>
+                </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="497.0" prefWidth="1700.0">
+                <children>
+                    <TableView fx:id="tblSale" onMouseClicked="#onClickTable" prefHeight="497.0" prefWidth="1440.0" style="-fx-font-size: 24px; -fx-background-color: white; -fx-border-color: gray;">
+                        <columns>
+                            <TableColumn fx:id="colBatchId" prefWidth="215.0" text="Batch ID" />
+                            <TableColumn fx:id="colSaleId" prefWidth="215.0" text="Sale ID" />
+                            <TableColumn fx:id="colAmount" prefWidth="375.0" text="Amount Received(Rs.)" />
+                        <TableColumn fx:id="colDate" prefWidth="329.0" text="Sold Date" />
+                        <TableColumn fx:id="colChicksSold" prefWidth="304.0" text="Chicks Sold" />
+                        </columns>
+                    </TableView>
+                </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="110.0" prefHeight="135.0" prefWidth="1700.0">
+                <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="135.0" prefWidth="926.0" spacing="50.0">
+                     <children>
+                        <JFXButton fx:id="btnReset" buttonType="RAISED" layoutX="233.0" layoutY="51.0" onAction="#btnResetOnAction" prefHeight="53.0" prefWidth="173.0" style="-fx-background-color: #f1c40f; -fx-background-radius: 20;" text="RESET" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <graphic>
+                              <JFXBadge>
+                                 <children>
+                                    <ImageView fitHeight="38.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/icons8-reset-64.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </JFXBadge>
+                           </graphic>
+                        </JFXButton>
+                            <JFXButton fx:id="btnUpdate" buttonType="RAISED" onAction="#updateBatchSaleOnAction" prefHeight="53.0" prefWidth="173.0" style="-fx-background-color: #16a085; -fx-background-radius: 20;" text="UPDATE" textFill="WHITE">
+                                <font>
+                                    <Font name="Arial Rounded MT Bold" size="22.0" />
+                                </font>
+                           <graphic>
+                              <JFXBadge>
+                                 <children>
+                                    <ImageView fitHeight="38.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/EditIcon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </JFXBadge>
+                           </graphic>
+                            </JFXButton>
+                            <JFXButton fx:id="btnDelete" buttonType="RAISED" onAction="#deleteBatchSaleOnAction" prefHeight="53.0" prefWidth="173.0" style="-fx-background-color: #c0392b; -fx-background-radius: 20;" text="DELETE" textFill="WHITE">
+                                <font>
+                                    <Font name="Arial Rounded MT Bold" size="22.0" />
+                                </font>
+                           <graphic>
+                              <JFXBadge prefHeight="31.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/icons8-delete-24.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </JFXBadge>
+                           </graphic>
+                            </JFXButton>
+                     </children>
+                  </HBox>
+                    <HBox alignment="CENTER" prefHeight="134.0" prefWidth="646.0" spacing="50.0" />
+                </children>
+            </HBox>
+        </children>
+    </VBox>
+</children>
+</AnchorPane>
