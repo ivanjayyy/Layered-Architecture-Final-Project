@@ -1,7 +1,8 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lk.ijse.poultryfarm.dao.custom.EmployeeDAO;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 
@@ -9,16 +10,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EmployeeModel {
+public class EmployeeDAOImpl implements EmployeeDAO {
 
-    public boolean saveEmployee(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean save(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO employee VALUES (?,?,?,?,?)", employeeDto.getEmployeeId(),employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage());
     }
 
-    public boolean updateEmployee(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE employee SET name = ?, full_time = ?, contact = ?, daily_wage = ? WHERE employee_id = ?", employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage(),employeeDto.getEmployeeId());
     }
 
+    @Override
+    public boolean delete(String billId) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
     public double getDailyWage(String employeeId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT daily_wage from employee WHERE employee_id = ?", employeeId);
         if(resultSet.next()){
@@ -27,7 +36,8 @@ public class EmployeeModel {
         return 0;
     }
 
-    public ArrayList<EmployeeDto> searchEmployee(String fullTime) throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<EmployeeDto> search(String fullTime) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee WHERE full_time = ?", fullTime);
 
         ArrayList<EmployeeDto> employeeDtos = new ArrayList<>();
@@ -45,7 +55,8 @@ public class EmployeeModel {
         return employeeDtos;
     }
 
-    public ArrayList<EmployeeDto> getAllEmployee() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<EmployeeDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee");
 
         ArrayList<EmployeeDto> employeeDtos = new ArrayList<>();
@@ -63,7 +74,8 @@ public class EmployeeModel {
         return employeeDtos;
     }
 
-    public String getNextEmployeeId() throws SQLException, ClassNotFoundException {
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT employee_id FROM employee ORDER BY employee_id DESC LIMIT 1");
 
         if (resultSet.next()) {
@@ -78,6 +90,7 @@ public class EmployeeModel {
         return "E001";
     }
 
+    @Override
     public ObservableList<String> getAllEmployeeNames() throws SQLException, ClassNotFoundException {
         ResultSet rst = SQLUtil.execute("SELECT name FROM employee");
         ArrayList<String> list = new ArrayList<>();
@@ -91,6 +104,7 @@ public class EmployeeModel {
         return employeeNames;
     }
 
+    @Override
     public String getEmployeeId(String name) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT employee_id FROM employee WHERE name = ?", name);
         if (resultSet.next()) {
@@ -99,6 +113,7 @@ public class EmployeeModel {
         return null;
     }
 
+    @Override
     public int checkContactDuplicate(String contact) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT COUNT(employee_id) FROM employee WHERE contact = ?", contact);
         if (resultSet.next()) {

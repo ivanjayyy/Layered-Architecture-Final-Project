@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.BillDto;
 import lk.ijse.poultryfarm.dao.custom.impl.BillDAOImpl;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class AddBillController implements Initializable {
     private final String patternPaidAmount = "^[0-9]+(\\.[0-9]{1,2})?$";
 
     private final BillDAOImpl billModel = new BillDAOImpl();
-    private final ChickBatchModel chickBatchModel = new ChickBatchModel();
+    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
     public void saveBatchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String batchId = lblBatchId.getValue();

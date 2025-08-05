@@ -13,8 +13,8 @@ import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.controller.batch.BatchSalePageController;
 import lk.ijse.poultryfarm.dto.SaleDto;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
-import lk.ijse.poultryfarm.model.ChickStatusModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.model.SaleModel;
 
 import java.net.URL;
@@ -47,8 +47,8 @@ public class AddSaleController implements Initializable {
 
         SaleDto saleDto = new SaleDto(batchId,saleId,Double.parseDouble(totalSale),date,Integer.parseInt(chicksSold));
 
-        ChickStatusModel chickStatusModel = new ChickStatusModel();
-        ChickBatchModel chickBatchModel = new ChickBatchModel();
+        ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
+        ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
         int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);
         int chicksSoldToday = Integer.parseInt(chicksSold);

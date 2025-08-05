@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class AddChickBatchController implements Initializable {
 
         ChickBatchDto chickBatchDto = new ChickBatchDto(batchId, Integer.parseInt(totalChicks),Double.parseDouble(paymentMade),arrivedDate);
 
-            boolean isSaved = chickBatchModel.saveChickBatch(chickBatchDto);
+            boolean isSaved = chickBatchModel.save(chickBatchDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION,"Batch Saved Successfully").show();
@@ -47,7 +47,7 @@ public class AddChickBatchController implements Initializable {
             }
     }
 
-    private final ChickBatchModel chickBatchModel = new ChickBatchModel();
+    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
     /**
      * @param url
@@ -114,7 +114,7 @@ public class AddChickBatchController implements Initializable {
     }
 
     public void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = chickBatchModel.getNextBatchId();
+        String nextId = chickBatchModel.getNextId();
         lblBatchId.setText(nextId);
     }
 }

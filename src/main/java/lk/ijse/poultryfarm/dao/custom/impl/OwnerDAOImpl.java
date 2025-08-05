@@ -1,21 +1,46 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
+import lk.ijse.poultryfarm.dao.custom.OwnerDAO;
 import lk.ijse.poultryfarm.dto.OwnerDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class OwnerModel {
+public class OwnerDAOImpl implements OwnerDAO {
 
-    public boolean saveOwner(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<OwnerDto> getAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean save(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO owner VALUES (?,?,?,?,?)", ownerDto.getOwnerId(),ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail());
     }
 
-    public boolean updateOwner(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE owner SET name = ?, username = ?, password = ?, email = ? WHERE owner_id = ?", ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail(),ownerDto.getOwnerId());
     }
 
+    @Override
+    public boolean delete(String billId) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public ArrayList<OwnerDto> search(String billVariant) throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
+        return "";
+    }
+
+    @Override
     public String ownerUsername() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT username FROM owner WHERE owner_id = 'O001'");
         if (resultSet.next()) {
@@ -24,6 +49,7 @@ public class OwnerModel {
         return null;
     }
 
+    @Override
     public String ownerPassword() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT password FROM owner WHERE owner_id = 'O001'");
         if (resultSet.next()) {
@@ -32,6 +58,7 @@ public class OwnerModel {
         return null;
     }
 
+    @Override
     public OwnerDto getOwner() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM owner WHERE owner_id = 'O001'");
 
@@ -47,6 +74,7 @@ public class OwnerModel {
         return null;
     }
 
+    @Override
     public boolean hasOwner() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT COUNT(owner_id) FROM owner");
         if (resultSet.next()) {
@@ -57,6 +85,7 @@ public class OwnerModel {
         return false;
     }
 
+    @Override
     public String getEmail() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT email FROM owner WHERE owner_id = 'O001'");
         if (resultSet.next()) {
@@ -65,6 +94,7 @@ public class OwnerModel {
         return null;
     }
 
+    @Override
     public boolean changePassword(String password) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE owner SET password = ? WHERE owner_id = 'O001'", password);
     }

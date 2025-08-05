@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dto.tm.BatchSaleTm;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.model.SaleModel;
 
 import java.net.URL;
@@ -85,7 +85,7 @@ public class BatchSalePageController implements Initializable {
             loadTableData();
             inputSearch.clear();
 
-            ChickBatchModel chickBatchModel = new ChickBatchModel();
+            ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
             searchBatchId.getItems().clear();
             searchBatchId.setItems(chickBatchModel.getAllBatchIds());
 

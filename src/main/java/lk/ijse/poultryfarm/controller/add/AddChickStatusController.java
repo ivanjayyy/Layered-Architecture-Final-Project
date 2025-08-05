@@ -12,8 +12,8 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
-import lk.ijse.poultryfarm.model.ChickStatusModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.model.SaleModel;
 
 import java.net.URL;
@@ -27,8 +27,8 @@ public class AddChickStatusController implements Initializable {
     public TextField inputChicksDead;
     public JFXButton btnSave;
 
-    private final ChickStatusModel chickStatusModel = new ChickStatusModel();
-    private final ChickBatchModel chickBatchModel = new ChickBatchModel();
+    private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
+    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
     private final String patternChicksDead = "^[0-9]+$";
 
@@ -61,7 +61,7 @@ public class AddChickStatusController implements Initializable {
                         return;
                     }
 
-                    boolean isSaved = chickStatusModel.saveChickStatus(chickStatusDto);
+                    boolean isSaved = chickStatusModel.save(chickStatusDto);
 
                     if (isSaved) {
                         new Alert(Alert.AlertType.INFORMATION, "Chick Status Saved Successfully").show();
@@ -119,7 +119,7 @@ public class AddChickStatusController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = chickStatusModel.getNextChickStatusId();
+        String nextId = chickStatusModel.getNextId();
         lblChickStatusId.setText(nextId);
     }
 }

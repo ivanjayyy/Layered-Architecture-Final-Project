@@ -1,5 +1,6 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
+import lk.ijse.poultryfarm.dao.custom.ChickStatusDAO;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 
@@ -7,16 +8,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ChickStatusModel {
+public class ChickStatusDAOImpl implements ChickStatusDAO {
 
-    public boolean saveChickStatus(ChickStatusDto chickStatusDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean save(ChickStatusDto chickStatusDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO chick_status VALUES (?,?,?,?)", chickStatusDto.getBatchId(),chickStatusDto.getChickStatusId(),chickStatusDto.getDate(),chickStatusDto.getChicksDead());
     }
 
-    public boolean deleteChickStatus(String chickStatusId) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(ChickStatusDto employeeDto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String chickStatusId) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM chick_status WHERE chick_status_id = ?", chickStatusId);
     }
 
+    @Override
     public int selectedBatchChickDeaths(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT SUM(chicks_dead) from chick_status WHERE batch_id = ? GROUP BY batch_id", batchId);
         if(resultSet.next()){
@@ -25,7 +34,8 @@ public class ChickStatusModel {
         return 0;
     }
 
-    public ArrayList<ChickStatusDto> searchChickStatus(String batchId) throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<ChickStatusDto> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_status WHERE batch_id = ?", batchId);
         ArrayList<ChickStatusDto> chickStatusDtos = new ArrayList<>();
 
@@ -36,7 +46,8 @@ public class ChickStatusModel {
         return chickStatusDtos;
     }
 
-    public ArrayList<ChickStatusDto> getAllChickStatus() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<ChickStatusDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_status ORDER BY chick_status_id DESC");
 
         ArrayList<ChickStatusDto> chickStatusDtos = new ArrayList<>();
@@ -48,7 +59,8 @@ public class ChickStatusModel {
         return chickStatusDtos;
     }
 
-    public String getNextChickStatusId() throws SQLException, ClassNotFoundException {
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT chick_status_id FROM chick_status ORDER BY chick_status_id DESC LIMIT 1");
 
         if (resultSet.next()) {
@@ -63,6 +75,7 @@ public class ChickStatusModel {
         return "M001";
     }
 
+    @Override
     public int checkStatus(String date, String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT COUNT(chick_status_id) FROM chick_status WHERE date = ? AND batch_id = ?", date, batchId);
         if(resultSet.next()){

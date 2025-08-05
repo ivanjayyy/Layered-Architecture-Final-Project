@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.model.*;
 
@@ -30,7 +32,7 @@ public class AddFoodConsumptionController implements Initializable {
     public TextField inputConsumption;
     public JFXButton btnSave;
 
-    private final ChickBatchModel chickBatchModel = new ChickBatchModel();
+    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
     private final FoodConsumptionModel foodConsumptionModel = new FoodConsumptionModel();
     private final FoodModel foodModel = new FoodModel();
 
@@ -47,8 +49,8 @@ public class AddFoodConsumptionController implements Initializable {
         double foodConsumed = Double.parseDouble(consumption);
         boolean canConsume = foodRemain >= foodConsumed;
 
-        String selectedBatchArrivedDate = chickBatchModel.searchChickBatch(batchId).getFirst().getDate();
-        int selectedBatchTotalChicks = chickBatchModel.searchChickBatch(batchId).getFirst().getChickTotal();
+        String selectedBatchArrivedDate = chickBatchModel.search(batchId).getFirst().getDate();
+        int selectedBatchTotalChicks = chickBatchModel.search(batchId).getFirst().getChickTotal();
 
         LocalDate givenDate = LocalDate.parse(selectedBatchArrivedDate);
         LocalDate today = LocalDate.now();
@@ -76,7 +78,7 @@ public class AddFoodConsumptionController implements Initializable {
             return;
         }
 
-        ChickStatusModel chickStatusModel = new ChickStatusModel();
+        ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
         SaleModel saleModel = new SaleModel();
 
         int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);

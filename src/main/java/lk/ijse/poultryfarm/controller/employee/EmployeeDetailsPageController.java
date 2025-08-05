@@ -17,9 +17,9 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dto.tm.EmployeeDetailsTm;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
-import lk.ijse.poultryfarm.model.DailyAttendanceModel;
-import lk.ijse.poultryfarm.model.EmployeeModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ public class EmployeeDetailsPageController implements Initializable {
     public TableColumn<EmployeeDetailsTm,String> colContact;
     public TableColumn<EmployeeDetailsTm,Double> colDailyWage;
 
-    private final EmployeeModel employeeModel = new EmployeeModel();
+    private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
     public JFXButton btnSalary;
     public JFXButton btnAttendance;
     public JFXButton btnUpdate;
@@ -56,7 +56,7 @@ public class EmployeeDetailsPageController implements Initializable {
 
     public void searchEmployeeOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<EmployeeDto> employeeDtos = employeeModel.searchEmployee(inputSearch.getText());
+            ArrayList<EmployeeDto> employeeDtos = employeeModel.search(inputSearch.getText());
             ObservableList<EmployeeDetailsTm> employeeDetailsTms = FXCollections.observableArrayList();
             for (EmployeeDto employeeDto : employeeDtos) {
                 EmployeeDetailsTm employeeDetailsTm = new EmployeeDetailsTm(
@@ -112,7 +112,7 @@ public class EmployeeDetailsPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<EmployeeDto> employeeDtos = employeeModel.getAllEmployee();
+        ArrayList<EmployeeDto> employeeDtos = employeeModel.getAll();
         ObservableList<EmployeeDetailsTm> employeeDetailsTms = FXCollections.observableArrayList();
         for (EmployeeDto employeeDto : employeeDtos) {
             EmployeeDetailsTm employeeDetailsTm = new EmployeeDetailsTm(
@@ -140,14 +140,14 @@ public class EmployeeDetailsPageController implements Initializable {
                 selectedEmployeeContact = selectedItem.getContact();
                 selectedEmployeeDailyWage = String.valueOf(selectedItem.getDailyWage());
 
-                DailyAttendanceModel dailyAttendanceModel = new DailyAttendanceModel();
+                DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
                 if(dailyAttendanceModel.checkAttendance(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), selectedEmployeeId) == 0) {
                     btnAttendance.setDisable(false);
                 } else {
                     btnAttendance.setDisable(true);
                 }
 
-                ChickBatchModel chickBatchModel = new ChickBatchModel();
+                ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
                 String currentBatchId = chickBatchModel.getCurrentBatchId();
                 int currentBatchAttendDays = dailyAttendanceModel.countAttendance(selectedEmployeeId,currentBatchId);
 

@@ -18,8 +18,8 @@ import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
 import lk.ijse.poultryfarm.dto.tm.BatchDetailsTm;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
-import lk.ijse.poultryfarm.model.ChickStatusModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.model.SaleModel;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -59,12 +59,12 @@ public class BatchDetailsPageController implements Initializable {
     public TableColumn<BatchDetailsTm,Double> colPaymentMade;
     public TableColumn<BatchDetailsTm,String> colArrivedDate;
 
-    private final ChickBatchModel chickBatchModel = new ChickBatchModel();
+    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
     public JFXButton btnSale;
     public JFXButton btnStatus;
 
     private final SaleModel saleModel = new SaleModel();
-    private final ChickStatusModel chickStatusModel = new ChickStatusModel();
+    private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
     public JFXButton btnReset;
     public JFXComboBox<String> searchBatchId;
     public Label lblBatchSold;
@@ -116,10 +116,10 @@ public class BatchDetailsPageController implements Initializable {
             String currentBatchId = chickBatchModel.getCurrentBatchId();
             if(currentBatchId != null) {
                 selectedBatchId = currentBatchId;
-                selectedBatchTotalChicks = chickBatchModel.searchChickBatch(currentBatchId).getFirst().getChickTotal();
+                selectedBatchTotalChicks = chickBatchModel.search(currentBatchId).getFirst().getChickTotal();
                 loadBatchDetails();
 
-                selectedBatchDate = chickBatchModel.searchChickBatch(currentBatchId).getFirst().getDate();
+                selectedBatchDate = chickBatchModel.search(currentBatchId).getFirst().getDate();
                 LocalDate givenDate = LocalDate.parse(selectedBatchDate);
                 LocalDate today = LocalDate.now();
                 long daysBetween = ChronoUnit.DAYS.between(givenDate, today);
@@ -152,7 +152,7 @@ public class BatchDetailsPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<ChickBatchDto> chickBatchDtos = chickBatchModel.getAllChickBatch();
+        ArrayList<ChickBatchDto> chickBatchDtos = chickBatchModel.getAll();
         ObservableList<BatchDetailsTm> batchDetailsTms = FXCollections.observableArrayList();
 
         for (ChickBatchDto chickBatchDto : chickBatchDtos) {
@@ -169,7 +169,7 @@ public class BatchDetailsPageController implements Initializable {
 
     public void searchBatchOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<ChickBatchDto> chickBatchDtos = chickBatchModel.searchChickBatch(inputSearch.getText());
+            ArrayList<ChickBatchDto> chickBatchDtos = chickBatchModel.search(inputSearch.getText());
             ObservableList<BatchDetailsTm> batchDetailsTms = FXCollections.observableArrayList();
 
             for (ChickBatchDto chickBatchDto : chickBatchDtos) {

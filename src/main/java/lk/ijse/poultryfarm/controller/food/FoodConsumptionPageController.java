@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.tm.FoodConsumptionTm;
-import lk.ijse.poultryfarm.model.ChickBatchModel;
+import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.model.FoodConsumptionModel;
 
 import java.net.URL;
@@ -65,7 +65,7 @@ public class FoodConsumptionPageController implements Initializable {
             inputSearch.clear();
             btnSearch.setDisable(true);
 
-            ChickBatchModel chickBatchModel = new ChickBatchModel();
+            ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
             searchBatchId.getItems().clear();
             searchBatchId.setItems(chickBatchModel.getAllBatchIds());
 

@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
-import lk.ijse.poultryfarm.model.EmployeeModel;
+import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class AddEmployeeController implements Initializable {
     private final String patternContact = "^0\\d{9}$";
     private final String patternDailyWage = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final EmployeeModel employeeModel = new EmployeeModel();
+    private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
 
     public void saveBatchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String employeeId = lblEmployeeId.getText();
@@ -48,7 +48,7 @@ public class AddEmployeeController implements Initializable {
                 return;
             }
 
-            boolean isUpdated = employeeModel.updateEmployee(employeeDto);
+            boolean isUpdated = employeeModel.update(employeeDto);
 
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION,"Employee has been updated successfully").show();
@@ -67,7 +67,7 @@ public class AddEmployeeController implements Initializable {
                 return;
             }
 
-            boolean isSaved = employeeModel.saveEmployee(employeeDto);
+            boolean isSaved = employeeModel.save(employeeDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Employee Saved Successfully").show();
@@ -187,7 +187,7 @@ public class AddEmployeeController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = employeeModel.getNextEmployeeId();
+        String nextId = employeeModel.getNextId();
         lblEmployeeId.setText(nextId);
     }
 }
