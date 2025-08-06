@@ -15,7 +15,7 @@ import lk.ijse.poultryfarm.controller.batch.BatchSalePageController;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
-import lk.ijse.poultryfarm.model.SaleModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ public class AddSaleController implements Initializable {
     private final String patternChicksSold = "^[0-9]+$";
     private final String patternTotalSale = "^(0|[1-9][0-9]*)?(\\.[0-9]{1,2})?$";
 
-    private final SaleModel saleModel = new SaleModel();
+    private final SaleDAOImpl saleModel = new SaleDAOImpl();
 
     public int originalSoldChicks;
 
@@ -54,7 +54,7 @@ public class AddSaleController implements Initializable {
         int chicksSoldToday = Integer.parseInt(chicksSold);
         int batchChickTotal = chickBatchModel.getChickTotal(batchId);
 
-        SaleModel saleModel = new SaleModel();
+        SaleDAOImpl saleModel = new SaleDAOImpl();
         int totalSold = saleModel.selectedBatchTotalSold(batchId);
 
         int allSoldChicks = chicksSoldToday + totalSold;
@@ -66,7 +66,7 @@ public class AddSaleController implements Initializable {
 
         if(BatchSalePageController.updateSale){
             if(isValidForUpdate){
-                boolean isUpdated = saleModel.updateSale(saleDto);
+                boolean isUpdated = saleModel.update(saleDto);
 
                 if(isUpdated){
                     new Alert(Alert.AlertType.INFORMATION,"Sale Updated Successfully").show();
@@ -82,7 +82,7 @@ public class AddSaleController implements Initializable {
 
         } else {
             if(isValid){
-                boolean isSaved = saleModel.saveSale(saleDto);
+                boolean isSaved = saleModel.save(saleDto);
 
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION,"Sale Saved Successfully").show();
@@ -185,7 +185,7 @@ public class AddSaleController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = saleModel.getNextSaleId();
+        String nextId = saleModel.getNextId();
         lblSaleId.setText(nextId);
     }
 }

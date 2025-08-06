@@ -13,7 +13,7 @@ import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.SalaryDto;
 import lk.ijse.poultryfarm.dto.tm.SalaryManagementTm;
 import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
-import lk.ijse.poultryfarm.model.SalaryModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SalaryDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ public class SalaryManagementPageController implements Initializable {
     public TableColumn<SalaryManagementTm,Double> colSalary;
     public TableColumn<SalaryManagementTm,String> colDate;
 
-    private final SalaryModel salaryModel = new SalaryModel();
+    private final SalaryDAOImpl salaryModel = new SalaryDAOImpl();
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -76,7 +76,7 @@ public class SalaryManagementPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<SalaryDto> salaryDtos = salaryModel.getAllSalary();
+        ArrayList<SalaryDto> salaryDtos = salaryModel.getAll();
         ObservableList<SalaryManagementTm> salaryManagementTms = FXCollections.observableArrayList();
         for (SalaryDto salaryDto : salaryDtos) {
             SalaryManagementTm salaryManagementTm = new SalaryManagementTm(
@@ -92,7 +92,7 @@ public class SalaryManagementPageController implements Initializable {
 
     public void searchSalaryOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<SalaryDto> salaryDtos = salaryModel.searchSalary(inputSearch.getText());
+            ArrayList<SalaryDto> salaryDtos = salaryModel.search(inputSearch.getText());
             ObservableList<SalaryManagementTm> salaryManagementTms = FXCollections.observableArrayList();
             for (SalaryDto salaryDto : salaryDtos) {
                 SalaryManagementTm salaryManagementTm = new SalaryManagementTm(
@@ -130,7 +130,7 @@ public class SalaryManagementPageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = salaryModel.deleteSalary(selectedSalaryId);
+                boolean isDeleted = salaryModel.delete(selectedSalaryId);
 
                 if(isDeleted){
                     new Alert(Alert.AlertType.INFORMATION,"Salary Deleted successfully").show();

@@ -14,8 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dto.tm.FoodPaymentTm;
-import lk.ijse.poultryfarm.model.FoodModel;
-import lk.ijse.poultryfarm.model.FoodPaymentModel;
+import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.FoodPaymentDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class FoodPaymentPageController implements Initializable {
     public TableColumn<FoodPaymentTm,Double> colAmount;
     public TableColumn<FoodPaymentTm,String> colDate;
 
-    private final FoodPaymentModel foodPaymentModel = new FoodPaymentModel();
+    private final FoodPaymentDAOImpl foodPaymentModel = new FoodPaymentDAOImpl();
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -75,7 +75,7 @@ public class FoodPaymentPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.getAllFoodPayment();
+        ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.getAll();
         ObservableList<FoodPaymentTm> foodPaymentTms = FXCollections.observableArrayList();
         for (FoodPaymentDto foodPaymentDto : foodPaymentDtos) {
             FoodPaymentTm foodPaymentTm = new FoodPaymentTm(
@@ -92,7 +92,7 @@ public class FoodPaymentPageController implements Initializable {
 
     public void searchFoodPaymentOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.searchFoodPayment(inputSearch.getText());
+            ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.search(inputSearch.getText());
             ObservableList<FoodPaymentTm> foodPaymentTms = FXCollections.observableArrayList();
             for (FoodPaymentDto foodPaymentDto : foodPaymentDtos) {
                 FoodPaymentTm foodPaymentTm = new FoodPaymentTm(
@@ -119,7 +119,7 @@ public class FoodPaymentPageController implements Initializable {
         btnSearch.setDisable(false);
         String foodName = searchFoodName.getSelectionModel().getSelectedItem();
 
-        FoodModel foodModel = new FoodModel();
+        FoodDAOImpl foodModel = new FoodDAOImpl();
         inputSearch.setText(foodModel.getFoodId(foodName));
     }
 }

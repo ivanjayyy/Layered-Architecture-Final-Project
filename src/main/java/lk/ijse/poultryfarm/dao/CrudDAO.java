@@ -1,7 +1,5 @@
 package lk.ijse.poultryfarm.dao;
 
-import lk.ijse.poultryfarm.dto.EmployeeDto;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 

@@ -1,5 +1,6 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
+import lk.ijse.poultryfarm.dao.custom.WasteManagementDAO;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 
@@ -7,21 +8,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class WasteManagementModel {
+public class WasteManagementDAOImpl implements WasteManagementDAO {
 
-    public boolean saveWasteManagement(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean save(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO waste_management VALUES (?,?,?,?)", wasteManagementDto.getBatchId(),wasteManagementDto.getWasteId(),wasteManagementDto.getTotalSale(),wasteManagementDto.getDate());
     }
 
-    public boolean updateWasteManagement(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE waste_management SET batch_id = ?, total_sale = ?, date = ? WHERE waste_id = ?", wasteManagementDto.getBatchId(),wasteManagementDto.getTotalSale(),wasteManagementDto.getDate(),wasteManagementDto.getWasteId());
     }
 
-    public boolean deleteWasteManagement(String wasteId) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean delete(String wasteId) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM waste_management WHERE waste_id = ?", wasteId);
     }
 
-    public ArrayList<WasteManagementDto> searchWasteManagement(String batchId) throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<WasteManagementDto> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM waste_management WHERE batch_id = ?", batchId);
         ArrayList<WasteManagementDto> wasteManagementDtos = new ArrayList<>();
 
@@ -37,7 +42,8 @@ public class WasteManagementModel {
         return wasteManagementDtos;
     }
 
-    public ArrayList<WasteManagementDto> getAllWasteManagement() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<WasteManagementDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM waste_management ORDER BY waste_id DESC");
 
         ArrayList<WasteManagementDto> wasteManagementDtos = new ArrayList<>();
@@ -54,7 +60,8 @@ public class WasteManagementModel {
         return wasteManagementDtos;
     }
 
-    public String getNextWasteId() throws SQLException, ClassNotFoundException {
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT waste_id FROM waste_management ORDER BY waste_id DESC LIMIT 1");
 
         if (resultSet.next()) {

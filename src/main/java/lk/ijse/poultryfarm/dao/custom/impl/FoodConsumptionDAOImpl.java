@@ -1,5 +1,6 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
+import lk.ijse.poultryfarm.dao.custom.FoodConsumptionDAO;
 import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
@@ -9,16 +10,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class FoodConsumptionModel {
+public class FoodConsumptionDAOImpl implements FoodConsumptionDAO {
 
-    public boolean saveFoodConsumption(FoodConsumptionDto foodConsumptionDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean save(FoodConsumptionDto foodConsumptionDto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance().getConnection();
         try {
             connection.setAutoCommit(false);
             boolean isSaved = SQLUtil.execute("INSERT INTO food_consumption VALUES (?,?,?,?,?)", foodConsumptionDto.getBatchId(),foodConsumptionDto.getConsumptionId(),foodConsumptionDto.getDate(),foodConsumptionDto.getFoodId(),foodConsumptionDto.getConsumption());
 
             if (isSaved) {
-                FoodModel foodModel = new FoodModel();
+                FoodDAOImpl foodModel = new FoodDAOImpl();
                 boolean isUpdated = foodModel.updateAfterFoodConsumption(foodConsumptionDto);
 
                 if (isUpdated) {
@@ -38,7 +40,18 @@ public class FoodConsumptionModel {
         }
     }
 
-    public ArrayList<FoodConsumptionDto> searchFoodConsumption(String batchId) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(FoodConsumptionDto employeeDto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String billId) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public ArrayList<FoodConsumptionDto> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("select fc.batch_id,fc.consumption_id,fc.date,f.food_name,fc.consumption from food_consumption fc join food f on fc.food_id = f.food_id WHERE fc.batch_id = ? order by fc.consumption_id desc", batchId);
         ArrayList<FoodConsumptionDto> foodConsumptionDtos = new ArrayList<>();
 
@@ -55,7 +68,8 @@ public class FoodConsumptionModel {
         return foodConsumptionDtos;
     }
 
-    public ArrayList<FoodConsumptionDto> getAllFoodConsumption() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<FoodConsumptionDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("select fc.batch_id,fc.consumption_id,fc.date,f.food_name,fc.consumption from food_consumption fc join food f on fc.food_id = f.food_id order by fc.consumption_id desc");
 
         ArrayList<FoodConsumptionDto> foodConsumptionDtos = new ArrayList<>();
@@ -73,7 +87,8 @@ public class FoodConsumptionModel {
         return foodConsumptionDtos;
     }
 
-    public String getNextConsumptionId() throws SQLException, ClassNotFoundException {
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT consumption_id FROM food_consumption ORDER BY consumption_id DESC LIMIT 1");
 
         if (resultSet.next()) {

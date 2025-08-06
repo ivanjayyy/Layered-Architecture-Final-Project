@@ -14,7 +14,7 @@ import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
-import lk.ijse.poultryfarm.model.SaleModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,7 +42,7 @@ public class AddChickStatusController implements Initializable {
         int chickDeadToday = Integer.parseInt(chicksDead);
         int batchChickTotal = chickBatchModel.getChickTotal(batchId);
 
-        SaleModel saleModel = new SaleModel();
+        SaleDAOImpl saleModel = new SaleDAOImpl();
         int totalSold = saleModel.selectedBatchTotalSold(batchId);
 
         boolean isValid = (chickDeadToday + sumOfChickDead) <= (batchChickTotal-totalSold);

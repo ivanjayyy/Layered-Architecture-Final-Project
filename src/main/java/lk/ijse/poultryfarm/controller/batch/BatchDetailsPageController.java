@@ -20,7 +20,7 @@ import lk.ijse.poultryfarm.dto.ChickBatchDto;
 import lk.ijse.poultryfarm.dto.tm.BatchDetailsTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
-import lk.ijse.poultryfarm.model.SaleModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -63,7 +63,7 @@ public class BatchDetailsPageController implements Initializable {
     public JFXButton btnSale;
     public JFXButton btnStatus;
 
-    private final SaleModel saleModel = new SaleModel();
+    private final SaleDAOImpl saleModel = new SaleDAOImpl();
     private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
     public JFXButton btnReset;
     public JFXComboBox<String> searchBatchId;

@@ -18,7 +18,7 @@ import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dto.tm.BatchSaleTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.model.SaleModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -43,7 +43,7 @@ public class BatchSalePageController implements Initializable {
     public TableColumn<BatchSaleTm,String> colDate;
     public TableColumn<BatchSaleTm,Integer> colChicksSold;
 
-    private final SaleModel saleModel = new SaleModel();
+    private final SaleDAOImpl saleModel = new SaleDAOImpl();
 
     public TextField inputSearch;
     public JFXButton btnSearch;
@@ -96,7 +96,7 @@ public class BatchSalePageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<SaleDto> saleDtos = saleModel.getAllSale();
+        ArrayList<SaleDto> saleDtos = saleModel.getAll();
         ObservableList<BatchSaleTm> batchSaleTms = FXCollections.observableArrayList();
         for (SaleDto saleDto : saleDtos) {
             BatchSaleTm batchSaleTm = new BatchSaleTm(
@@ -113,7 +113,7 @@ public class BatchSalePageController implements Initializable {
 
     public void batchSaleSearchOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<SaleDto> saleDtos = saleModel.searchSale(inputSearch.getText());
+            ArrayList<SaleDto> saleDtos = saleModel.search(inputSearch.getText());
             ObservableList<BatchSaleTm> batchSaleTms = FXCollections.observableArrayList();
             for (SaleDto saleDto : saleDtos) {
                 BatchSaleTm batchSaleTm = new BatchSaleTm(
@@ -163,7 +163,7 @@ public class BatchSalePageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = saleModel.deleteSale(selectedSaleId);
+                boolean isDeleted = saleModel.delete(selectedSaleId);
 
                 if (isDeleted) {
                     new Alert(Alert.AlertType.INFORMATION,"Batch sale deleted successfully").show();

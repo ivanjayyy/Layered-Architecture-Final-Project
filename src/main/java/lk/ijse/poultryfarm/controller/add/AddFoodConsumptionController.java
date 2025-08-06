@@ -13,10 +13,8 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
+import lk.ijse.poultryfarm.dao.custom.impl.*;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
-import lk.ijse.poultryfarm.model.*;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,8 +31,8 @@ public class AddFoodConsumptionController implements Initializable {
     public JFXButton btnSave;
 
     private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-    private final FoodConsumptionModel foodConsumptionModel = new FoodConsumptionModel();
-    private final FoodModel foodModel = new FoodModel();
+    private final FoodConsumptionDAOImpl foodConsumptionModel = new FoodConsumptionDAOImpl();
+    private final FoodDAOImpl foodModel = new FoodDAOImpl();
 
     private final String patternConsumption = "^[0-9]+(\\.[0-9]{1,2})?$";
 
@@ -79,7 +77,7 @@ public class AddFoodConsumptionController implements Initializable {
         }
 
         ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
-        SaleModel saleModel = new SaleModel();
+        SaleDAOImpl saleModel = new SaleDAOImpl();
 
         int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);
         int batchChicksLeft = (selectedBatchTotalChicks - sumOfChickDead);
@@ -101,7 +99,7 @@ public class AddFoodConsumptionController implements Initializable {
                     Double.parseDouble(consumption)
             );
 
-            boolean isSaved = foodConsumptionModel.saveFoodConsumption(foodConsumptionDto);
+            boolean isSaved = foodConsumptionModel.save(foodConsumptionDto);
 
             if (isSaved) {
                 double fRemain = Double.parseDouble(foodModel.foodInventory(foodId));
@@ -160,7 +158,7 @@ public class AddFoodConsumptionController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = foodConsumptionModel.getNextConsumptionId();
+        String nextId = foodConsumptionModel.getNextId();
         lblConsumptionId.setText(nextId);
     }
 

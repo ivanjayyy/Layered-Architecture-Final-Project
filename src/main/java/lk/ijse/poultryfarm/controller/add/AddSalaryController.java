@@ -15,7 +15,7 @@ import lk.ijse.poultryfarm.dto.SalaryDto;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
-import lk.ijse.poultryfarm.model.SalaryModel;
+import lk.ijse.poultryfarm.dao.custom.impl.SalaryDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class AddSalaryController implements Initializable {
 
     private final String patternAmount = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final SalaryModel salaryModel = new SalaryModel();
+    private final SalaryDAOImpl salaryModel = new SalaryDAOImpl();
     private final DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
     private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
     private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
@@ -42,7 +42,7 @@ public class AddSalaryController implements Initializable {
         String date = inputDate.getValue().toString();
 
         SalaryDto salaryDto = new SalaryDto(salaryId,employeeId,Double.parseDouble(amount),date);
-        boolean isSaved = salaryModel.saveSalary(salaryDto);
+        boolean isSaved = salaryModel.save(salaryDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Salary Saved").show();
@@ -101,7 +101,7 @@ public class AddSalaryController implements Initializable {
 
     private void loadNextId() {
         try {
-            String nextId = salaryModel.getNextSalaryId();
+            String nextId = salaryModel.getNextId();
             lblSalaryId.setText(nextId);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

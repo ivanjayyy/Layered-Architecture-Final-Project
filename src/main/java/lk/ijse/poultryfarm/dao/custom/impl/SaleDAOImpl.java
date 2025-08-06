@@ -1,5 +1,6 @@
-package lk.ijse.poultryfarm.model;
+package lk.ijse.poultryfarm.dao.custom.impl;
 
+import lk.ijse.poultryfarm.dao.custom.SaleDAO;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 
@@ -7,21 +8,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SaleModel {
+public class SaleDAOImpl implements SaleDAO {
 
-    public boolean saveSale(SaleDto saleDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean save(SaleDto saleDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO sale VALUES (?,?,?,?,?)", saleDto.getBatchId(),saleDto.getSaleId(),saleDto.getTotalSale(),saleDto.getDate(),saleDto.getChicksSold());
     }
 
-    public boolean updateSale(SaleDto saleDto) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean update(SaleDto saleDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE sale SET batch_id = ?, total_sale = ?, date = ?, chicks_sold = ? WHERE sale_id = ?", saleDto.getBatchId(),saleDto.getTotalSale(),saleDto.getDate(),saleDto.getChicksSold(),saleDto.getSaleId());
     }
 
-    public boolean deleteSale(String saleId) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean delete(String saleId) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM sale WHERE sale_id = ?", saleId);
     }
 
-    public ArrayList<SaleDto> searchSale(String batchId) throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<SaleDto> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM sale WHERE batch_id = ?", batchId);
         ArrayList<SaleDto> saleDtos = new ArrayList<>();
 
@@ -38,7 +43,8 @@ public class SaleModel {
         return saleDtos;
     }
 
-    public ArrayList<SaleDto> getAllSale() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<SaleDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM sale ORDER BY sale_id DESC");
 
         ArrayList<SaleDto> saleDtos = new ArrayList<>();
@@ -56,7 +62,8 @@ public class SaleModel {
         return saleDtos;
     }
 
-    public String getNextSaleId() throws SQLException, ClassNotFoundException {
+    @Override
+    public String getNextId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT sale_id FROM sale ORDER BY sale_id DESC LIMIT 1");
 
         if (resultSet.next()) {
@@ -71,6 +78,7 @@ public class SaleModel {
         return "R001";
     }
 
+    @Override
     public int selectedBatchTotalSold(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT SUM(chicks_sold) FROM sale WHERE batch_id = ? GROUP BY batch_id", batchId);
         if(resultSet.next()){

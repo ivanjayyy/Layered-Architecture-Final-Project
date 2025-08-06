@@ -15,7 +15,7 @@ import lk.ijse.poultryfarm.controller.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.tm.FoodConsumptionTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.model.FoodConsumptionModel;
+import lk.ijse.poultryfarm.dao.custom.impl.FoodConsumptionDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class FoodConsumptionPageController implements Initializable {
     public TableColumn<FoodConsumptionTm,String> colFoodId;
     public TableColumn<FoodConsumptionTm,Double> colConsumption;
 
-    private final FoodConsumptionModel foodConsumptionModel = new FoodConsumptionModel();
+    private final FoodConsumptionDAOImpl foodConsumptionModel = new FoodConsumptionDAOImpl();
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -76,7 +76,7 @@ public class FoodConsumptionPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.getAllFoodConsumption();
+        ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.getAll();
         ObservableList<FoodConsumptionTm> foodConsumptionTms = FXCollections.observableArrayList();
 
         for (FoodConsumptionDto foodConsumptionDto : foodConsumptionDtos) {
@@ -94,7 +94,7 @@ public class FoodConsumptionPageController implements Initializable {
 
     public void searchFoodConsumptionOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.searchFoodConsumption(inputSearch.getText());
+            ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.search(inputSearch.getText());
             ObservableList<FoodConsumptionTm> foodConsumptionTms = FXCollections.observableArrayList();
 
             for (FoodConsumptionDto foodConsumptionDto : foodConsumptionDtos) {
