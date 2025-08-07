@@ -5,6 +5,7 @@ import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.OwnerDAO;
 import lk.ijse.poultryfarm.dto.OwnerDto;
+import lk.ijse.poultryfarm.entity.Owner;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,17 +16,22 @@ public class OwnerBOImpl implements OwnerBO {
 
     @Override
     public ArrayList<OwnerDto> getAllOwners() throws SQLException, ClassNotFoundException {
-        return ownerDAO.getAll();
+        ArrayList<Owner> entity = ownerDAO.getAll();
+        ArrayList<OwnerDto> dto = new ArrayList<>();
+        for (Owner entity1 : entity) {
+            dto.add(new OwnerDto(entity1.getOwnerId(),entity1.getName(),entity1.getUsername(),entity1.getPassword(),entity1.getEmail()));
+        }
+        return dto;
     }
 
     @Override
     public boolean saveOwner(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
-        return ownerDAO.save(ownerDto);
+        return ownerDAO.save(new Owner(ownerDto.getOwnerId(),ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail()));
     }
 
     @Override
     public boolean updateOwner(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
-        return ownerDAO.update(ownerDto);
+        return ownerDAO.update(new Owner(ownerDto.getOwnerId(),ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail()));
     }
 
     @Override
@@ -35,7 +41,12 @@ public class OwnerBOImpl implements OwnerBO {
 
     @Override
     public ArrayList<OwnerDto> searchOwner(String billVariant) throws SQLException, ClassNotFoundException {
-        return ownerDAO.search(billVariant);
+        ArrayList<Owner> entity = ownerDAO.search(billVariant);
+        ArrayList<OwnerDto> dto = new ArrayList<>();
+        for (Owner entity1 : entity) {
+            dto.add(new OwnerDto(entity1.getOwnerId(),entity1.getName(),entity1.getUsername(),entity1.getPassword(),entity1.getEmail()));
+        }
+        return dto;
     }
 
     @Override

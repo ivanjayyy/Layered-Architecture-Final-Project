@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import lk.ijse.poultryfarm.dao.custom.ChickBatchDAO;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.ChickBatch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 public class ChickBatchDAOImpl implements ChickBatchDAO {
 
     @Override
-    public boolean save(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException {
+    public boolean save(ChickBatch chickBatchDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO chick_batch VALUES (?,?,?,?)", chickBatchDto.getBatchId(),chickBatchDto.getChickTotal(),chickBatchDto.getPayment(),chickBatchDto.getDate());
     }
 
     @Override
-    public boolean update(ChickBatchDto employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(ChickBatch employeeDto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -28,13 +29,13 @@ public class ChickBatchDAOImpl implements ChickBatchDAO {
     }
 
     @Override
-    public ArrayList<ChickBatchDto> search(String batchId) throws SQLException, ClassNotFoundException {
+    public ArrayList<ChickBatch> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_batch WHERE batch_id = ?", batchId);
 
-        ArrayList<ChickBatchDto> chickBatchDtos = new ArrayList<>();
+        ArrayList<ChickBatch> chickBatchDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            ChickBatchDto chickBatchDto = new ChickBatchDto(
+            ChickBatch chickBatchDto = new ChickBatch(
                     resultSet.getString(1),
                     resultSet.getInt(2),
                     resultSet.getDouble(3),
@@ -46,13 +47,13 @@ public class ChickBatchDAOImpl implements ChickBatchDAO {
     }
 
     @Override
-    public ArrayList<ChickBatchDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<ChickBatch> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_batch ORDER BY batch_id DESC");
 
-        ArrayList<ChickBatchDto> chickBatchDtos = new ArrayList<>();
+        ArrayList<ChickBatch> chickBatchDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            ChickBatchDto chickBatchDto = new ChickBatchDto(
+            ChickBatch chickBatchDto = new ChickBatch(
                     resultSet.getString(1),
                     resultSet.getInt(2),
                     resultSet.getDouble(3),

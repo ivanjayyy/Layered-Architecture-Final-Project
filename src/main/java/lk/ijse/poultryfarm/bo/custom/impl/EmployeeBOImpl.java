@@ -7,6 +7,7 @@ import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.EmployeeDAO;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
+import lk.ijse.poultryfarm.entity.Employee;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,12 +18,12 @@ public class EmployeeBOImpl implements EmployeeBO {
 
     @Override
     public boolean saveEmployee(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
-        return employeeDAO.save(employeeDto);
+        return employeeDAO.save(new Employee(employeeDto.getEmployeeId(),employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage()));
     }
 
     @Override
     public boolean updateEmployee(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
-        return employeeDAO.update(employeeDto);
+        return employeeDAO.update(new Employee(employeeDto.getEmployeeId(),employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage()));
     }
 
     @Override
@@ -37,12 +38,22 @@ public class EmployeeBOImpl implements EmployeeBO {
 
     @Override
     public ArrayList<EmployeeDto> searchEmployee(String fullTime) throws SQLException, ClassNotFoundException {
-        return employeeDAO.search(fullTime);
+        ArrayList<Employee> entity = employeeDAO.search(fullTime);
+        ArrayList<EmployeeDto> dto = new ArrayList<>();
+        for (Employee entity1 : entity) {
+            dto.add(new EmployeeDto(entity1.getEmployeeId(),entity1.getName(),entity1.getFullTime(),entity1.getContact(),entity1.getDailyWage()));
+        }
+        return dto;
     }
 
     @Override
     public ArrayList<EmployeeDto> getAllEmployees() throws SQLException, ClassNotFoundException {
-        return employeeDAO.getAll();
+        ArrayList<Employee> entity = employeeDAO.getAll();
+        ArrayList<EmployeeDto> dto = new ArrayList<>();
+        for (Employee entity1 : entity) {
+            dto.add(new EmployeeDto(entity1.getEmployeeId(),entity1.getName(),entity1.getFullTime(),entity1.getContact(),entity1.getDailyWage()));
+        }
+        return dto;
     }
 
     @Override

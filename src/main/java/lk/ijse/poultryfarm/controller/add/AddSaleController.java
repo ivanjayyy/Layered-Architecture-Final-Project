@@ -36,7 +36,7 @@ public class AddSaleController implements Initializable {
     private final String patternChicksSold = "^[0-9]+$";
     private final String patternTotalSale = "^(0|[1-9][0-9]*)?(\\.[0-9]{1,2})?$";
 
-    SaleBO saleModel = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
+    SaleBO saleBO = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
     ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
     ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
@@ -55,8 +55,7 @@ public class AddSaleController implements Initializable {
         int chicksSoldToday = Integer.parseInt(chicksSold);
         int batchChickTotal = chickBatchBO.getChickTotal(batchId);
 
-        SaleDAOImpl saleModel = new SaleDAOImpl();
-        int totalSold = saleModel.selectedBatchTotalSold(batchId);
+        int totalSold = saleBO.selectedBatchTotalSold(batchId);
 
         int allSoldChicks = chicksSoldToday + totalSold;
         int allSoldChicksForUpdate = chicksSoldToday + totalSold - originalSoldChicks;
@@ -67,7 +66,7 @@ public class AddSaleController implements Initializable {
 
         if(BatchSalePageController.updateSale){
             if(isValidForUpdate){
-                boolean isUpdated = saleModel.update(saleDto);
+                boolean isUpdated = saleBO.updateSale(saleDto);
 
                 if(isUpdated){
                     new Alert(Alert.AlertType.INFORMATION,"Sale Updated Successfully").show();
@@ -83,7 +82,7 @@ public class AddSaleController implements Initializable {
 
         } else {
             if(isValid){
-                boolean isSaved = saleModel.save(saleDto);
+                boolean isSaved = saleBO.saveSale(saleDto);
 
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION,"Sale Saved Successfully").show();
@@ -186,7 +185,7 @@ public class AddSaleController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = saleModel.getNextSaleId();
+        String nextId = saleBO.getNextSaleId();
         lblSaleId.setText(nextId);
     }
 }

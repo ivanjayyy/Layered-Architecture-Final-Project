@@ -3,6 +3,7 @@ package lk.ijse.poultryfarm.dao.custom.impl;
 import lk.ijse.poultryfarm.dao.custom.OwnerDAO;
 import lk.ijse.poultryfarm.dto.OwnerDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.Owner;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,17 +12,17 @@ import java.util.ArrayList;
 public class OwnerDAOImpl implements OwnerDAO {
 
     @Override
-    public ArrayList<OwnerDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Owner> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
+    public boolean save(Owner ownerDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO owner VALUES (?,?,?,?,?)", ownerDto.getOwnerId(),ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail());
     }
 
     @Override
-    public boolean update(OwnerDto ownerDto) throws SQLException, ClassNotFoundException {
+    public boolean update(Owner ownerDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE owner SET name = ?, username = ?, password = ?, email = ? WHERE owner_id = ?", ownerDto.getName(),ownerDto.getUsername(),ownerDto.getPassword(),ownerDto.getEmail(),ownerDto.getOwnerId());
     }
 
@@ -31,7 +32,7 @@ public class OwnerDAOImpl implements OwnerDAO {
     }
 
     @Override
-    public ArrayList<OwnerDto> search(String billVariant) throws SQLException, ClassNotFoundException {
+    public ArrayList<Owner> search(String billVariant) throws SQLException, ClassNotFoundException {
         return null;
     }
 

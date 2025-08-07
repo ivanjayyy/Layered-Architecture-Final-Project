@@ -3,6 +3,7 @@ package lk.ijse.poultryfarm.dao.custom.impl;
 import lk.ijse.poultryfarm.dao.custom.ChickStatusDAO;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.ChickStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 public class ChickStatusDAOImpl implements ChickStatusDAO {
 
     @Override
-    public boolean save(ChickStatusDto chickStatusDto) throws SQLException, ClassNotFoundException {
+    public boolean save(ChickStatus chickStatusDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO chick_status VALUES (?,?,?,?)", chickStatusDto.getBatchId(),chickStatusDto.getChickStatusId(),chickStatusDto.getDate(),chickStatusDto.getChicksDead());
     }
 
     @Override
-    public boolean update(ChickStatusDto employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(ChickStatus employeeDto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -35,25 +36,25 @@ public class ChickStatusDAOImpl implements ChickStatusDAO {
     }
 
     @Override
-    public ArrayList<ChickStatusDto> search(String batchId) throws SQLException, ClassNotFoundException {
+    public ArrayList<ChickStatus> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_status WHERE batch_id = ?", batchId);
-        ArrayList<ChickStatusDto> chickStatusDtos = new ArrayList<>();
+        ArrayList<ChickStatus> chickStatusDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            ChickStatusDto chickStatusDto = new ChickStatusDto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
+            ChickStatus chickStatusDto = new ChickStatus(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
             chickStatusDtos.add(chickStatusDto);
         }
         return chickStatusDtos;
     }
 
     @Override
-    public ArrayList<ChickStatusDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<ChickStatus> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM chick_status ORDER BY chick_status_id DESC");
 
-        ArrayList<ChickStatusDto> chickStatusDtos = new ArrayList<>();
+        ArrayList<ChickStatus> chickStatusDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            ChickStatusDto chickStatusDto = new ChickStatusDto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
+            ChickStatus chickStatusDto = new ChickStatus(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
             chickStatusDtos.add(chickStatusDto);
         }
         return chickStatusDtos;

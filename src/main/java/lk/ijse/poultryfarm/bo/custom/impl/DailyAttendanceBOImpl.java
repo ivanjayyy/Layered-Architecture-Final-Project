@@ -5,6 +5,7 @@ import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.DailyAttendanceDAO;
 import lk.ijse.poultryfarm.dto.DailyAttendanceDto;
+import lk.ijse.poultryfarm.entity.DailyAttendance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,12 +16,12 @@ public class DailyAttendanceBOImpl implements DailyAttendanceBO {
 
     @Override
     public boolean saveAttendance(DailyAttendanceDto dailyAttendanceDto) throws SQLException, ClassNotFoundException {
-        return dailyAttendanceDAO.save(dailyAttendanceDto);
+        return dailyAttendanceDAO.save(new DailyAttendance(dailyAttendanceDto.getBatchId(),dailyAttendanceDto.getAttendanceId(),dailyAttendanceDto.getDate(),dailyAttendanceDto.getEmployeeId(),dailyAttendanceDto.isAttendance()));
     }
 
     @Override
     public boolean updateAttendance(DailyAttendanceDto employeeDto) throws SQLException, ClassNotFoundException {
-        return dailyAttendanceDAO.update(employeeDto);
+        return dailyAttendanceDAO.update(new DailyAttendance(employeeDto.getBatchId(),employeeDto.getAttendanceId(),employeeDto.getDate(),employeeDto.getEmployeeId(),employeeDto.isAttendance()));
     }
 
     @Override
@@ -30,12 +31,22 @@ public class DailyAttendanceBOImpl implements DailyAttendanceBO {
 
     @Override
     public ArrayList<DailyAttendanceDto> searchAttendance(String date) throws SQLException, ClassNotFoundException {
-        return dailyAttendanceDAO.search(date);
+        ArrayList<DailyAttendance> entity = dailyAttendanceDAO.search(date);
+        ArrayList<DailyAttendanceDto> dto = new ArrayList<>();
+        for (DailyAttendance entity1 : entity) {
+            dto.add(new DailyAttendanceDto(entity1.getBatchId(),entity1.getAttendanceId(),entity1.getDate(),entity1.getEmployeeId(),entity1.isAttendance()));
+        }
+        return dto;
     }
 
     @Override
     public ArrayList<DailyAttendanceDto> getAllAttendance() throws SQLException, ClassNotFoundException {
-        return dailyAttendanceDAO.getAll();
+        ArrayList<DailyAttendance> entity = dailyAttendanceDAO.getAll();
+        ArrayList<DailyAttendanceDto> dto = new ArrayList<>();
+        for (DailyAttendance entity1 : entity) {
+            dto.add(new DailyAttendanceDto(entity1.getBatchId(),entity1.getAttendanceId(),entity1.getDate(),entity1.getEmployeeId(),entity1.isAttendance()));
+        }
+        return dto;
     }
 
     @Override

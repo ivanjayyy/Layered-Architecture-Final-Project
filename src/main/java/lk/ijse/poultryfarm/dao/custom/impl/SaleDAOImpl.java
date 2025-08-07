@@ -3,6 +3,7 @@ package lk.ijse.poultryfarm.dao.custom.impl;
 import lk.ijse.poultryfarm.dao.custom.SaleDAO;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.Sale;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 public class SaleDAOImpl implements SaleDAO {
 
     @Override
-    public boolean save(SaleDto saleDto) throws SQLException, ClassNotFoundException {
+    public boolean save(Sale saleDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO sale VALUES (?,?,?,?,?)", saleDto.getBatchId(),saleDto.getSaleId(),saleDto.getTotalSale(),saleDto.getDate(),saleDto.getChicksSold());
     }
 
     @Override
-    public boolean update(SaleDto saleDto) throws SQLException, ClassNotFoundException {
+    public boolean update(Sale saleDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE sale SET batch_id = ?, total_sale = ?, date = ?, chicks_sold = ? WHERE sale_id = ?", saleDto.getBatchId(),saleDto.getTotalSale(),saleDto.getDate(),saleDto.getChicksSold(),saleDto.getSaleId());
     }
 
@@ -26,12 +27,12 @@ public class SaleDAOImpl implements SaleDAO {
     }
 
     @Override
-    public ArrayList<SaleDto> search(String batchId) throws SQLException, ClassNotFoundException {
+    public ArrayList<Sale> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM sale WHERE batch_id = ?", batchId);
-        ArrayList<SaleDto> saleDtos = new ArrayList<>();
+        ArrayList<Sale> saleDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            SaleDto saleDto = new SaleDto(
+            Sale saleDto = new Sale(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getDouble(3),
@@ -44,13 +45,13 @@ public class SaleDAOImpl implements SaleDAO {
     }
 
     @Override
-    public ArrayList<SaleDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Sale> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM sale ORDER BY sale_id DESC");
 
-        ArrayList<SaleDto> saleDtos = new ArrayList<>();
+        ArrayList<Sale> saleDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            SaleDto saleDto = new SaleDto(
+            Sale saleDto = new Sale(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getDouble(3),

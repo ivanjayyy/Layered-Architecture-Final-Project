@@ -37,6 +37,7 @@ public class WasteManagementPageController implements Initializable {
     public TableColumn<WasteManagementTm,String> colSoldDate;
 
     WasteManagementBO wasteManagementBO = (WasteManagementBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.WASTE_MANAGEMENT);
+
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnDelete;

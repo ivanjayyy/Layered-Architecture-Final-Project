@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import lk.ijse.poultryfarm.dao.custom.EmployeeDAO;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.Employee;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
-    public boolean save(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean save(Employee employeeDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO employee VALUES (?,?,?,?,?)", employeeDto.getEmployeeId(),employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage());
     }
 
     @Override
-    public boolean update(EmployeeDto employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(Employee employeeDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE employee SET name = ?, full_time = ?, contact = ?, daily_wage = ? WHERE employee_id = ?", employeeDto.getName(),employeeDto.getFullTime(),employeeDto.getContact(),employeeDto.getDailyWage(),employeeDto.getEmployeeId());
     }
 
@@ -37,13 +38,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public ArrayList<EmployeeDto> search(String fullTime) throws SQLException, ClassNotFoundException {
+    public ArrayList<Employee> search(String fullTime) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee WHERE full_time = ?", fullTime);
 
-        ArrayList<EmployeeDto> employeeDtos = new ArrayList<>();
+        ArrayList<Employee> employeeDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            EmployeeDto employeeDto = new EmployeeDto(
+            Employee employeeDto = new Employee(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
@@ -56,13 +57,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public ArrayList<EmployeeDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Employee> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee");
 
-        ArrayList<EmployeeDto> employeeDtos = new ArrayList<>();
+        ArrayList<Employee> employeeDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            EmployeeDto employeeDto = new EmployeeDto(
+            Employee employeeDto = new Employee(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),

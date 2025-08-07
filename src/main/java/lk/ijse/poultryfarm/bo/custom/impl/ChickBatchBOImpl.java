@@ -5,6 +5,7 @@ import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.custom.ChickBatchDAO;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
+import lk.ijse.poultryfarm.entity.ChickBatch;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,12 +15,12 @@ public class ChickBatchBOImpl implements ChickBatchBO {
 
     @Override
     public boolean saveChickBatch(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.save(chickBatchDto);
+        return chickBatchDAO.save(new ChickBatch(chickBatchDto.getBatchId(),chickBatchDto.getChickTotal(),chickBatchDto.getPayment(),chickBatchDto.getDate()));
     }
 
     @Override
-    public boolean updateChickBatch(ChickBatchDto employeeDto) throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.update(employeeDto);
+    public boolean updateChickBatch(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException {
+        return chickBatchDAO.update(new ChickBatch(chickBatchDto.getBatchId(),chickBatchDto.getChickTotal(),chickBatchDto.getPayment(),chickBatchDto.getDate()));
     }
 
     @Override
@@ -29,12 +30,22 @@ public class ChickBatchBOImpl implements ChickBatchBO {
 
     @Override
     public ArrayList<ChickBatchDto> searchChickBatch(String batchId) throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.search(batchId);
+        ArrayList<ChickBatch> entity = chickBatchDAO.search(batchId);
+        ArrayList<ChickBatchDto> dto = new ArrayList<>();
+        for (ChickBatch entity1 : entity) {
+            dto.add(new ChickBatchDto(entity1.getBatchId(),entity1.getChickTotal(),entity1.getPayment(),entity1.getDate()));
+        }
+        return dto;
     }
 
     @Override
     public ArrayList<ChickBatchDto> getAllChickBatches() throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.getAll();
+        ArrayList<ChickBatch> entity = chickBatchDAO.getAll();
+        ArrayList<ChickBatchDto> dto = new ArrayList<>();
+        for (ChickBatch entity1 : entity) {
+            dto.add(new ChickBatchDto(entity1.getBatchId(),entity1.getChickTotal(),entity1.getPayment(),entity1.getDate()));
+        }
+        return dto;
     }
 
     @Override

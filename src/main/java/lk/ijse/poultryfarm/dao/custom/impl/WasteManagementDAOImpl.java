@@ -3,6 +3,7 @@ package lk.ijse.poultryfarm.dao.custom.impl;
 import lk.ijse.poultryfarm.dao.custom.WasteManagementDAO;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.WasteManagement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 public class WasteManagementDAOImpl implements WasteManagementDAO {
 
     @Override
-    public boolean save(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
+    public boolean save(WasteManagement wasteManagementDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO waste_management VALUES (?,?,?,?)", wasteManagementDto.getBatchId(),wasteManagementDto.getWasteId(),wasteManagementDto.getTotalSale(),wasteManagementDto.getDate());
     }
 
     @Override
-    public boolean update(WasteManagementDto wasteManagementDto) throws SQLException, ClassNotFoundException {
+    public boolean update(WasteManagement wasteManagementDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE waste_management SET batch_id = ?, total_sale = ?, date = ? WHERE waste_id = ?", wasteManagementDto.getBatchId(),wasteManagementDto.getTotalSale(),wasteManagementDto.getDate(),wasteManagementDto.getWasteId());
     }
 
@@ -26,12 +27,12 @@ public class WasteManagementDAOImpl implements WasteManagementDAO {
     }
 
     @Override
-    public ArrayList<WasteManagementDto> search(String batchId) throws SQLException, ClassNotFoundException {
+    public ArrayList<WasteManagement> search(String batchId) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM waste_management WHERE batch_id = ?", batchId);
-        ArrayList<WasteManagementDto> wasteManagementDtos = new ArrayList<>();
+        ArrayList<WasteManagement> wasteManagementDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            WasteManagementDto wasteManagementDto = new WasteManagementDto(
+            WasteManagement wasteManagementDto = new WasteManagement(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getDouble(3),
@@ -43,13 +44,13 @@ public class WasteManagementDAOImpl implements WasteManagementDAO {
     }
 
     @Override
-    public ArrayList<WasteManagementDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<WasteManagement> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM waste_management ORDER BY waste_id DESC");
 
-        ArrayList<WasteManagementDto> wasteManagementDtos = new ArrayList<>();
+        ArrayList<WasteManagement> wasteManagementDtos = new ArrayList<>();
 
         while (resultSet.next()) {
-            WasteManagementDto wasteManagementDto = new WasteManagementDto(
+            WasteManagement wasteManagementDto = new WasteManagement(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getDouble(3),
