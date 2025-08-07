@@ -9,7 +9,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.FoodPaymentBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dao.custom.impl.FoodPaymentDAOImpl;
@@ -30,7 +32,7 @@ public class AddFoodPaymentController implements Initializable {
     private final String patternQuantity = "^[0-9]+(\\.[0-9]{1,2})?$";
     private final String patternPaidAmount = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final FoodPaymentDAOImpl foodPaymentModel = new FoodPaymentDAOImpl();
+    FoodPaymentBO foodPaymentBO = (FoodPaymentBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_PAYMENT);
 
     public void saveFoodPaymentOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String paymentId = lblPaymentId.getText();
@@ -41,7 +43,7 @@ public class AddFoodPaymentController implements Initializable {
 
         FoodPaymentDto foodPaymentDto = new FoodPaymentDto(paymentId,foodId,Double.parseDouble(quantity),Double.parseDouble(paidAmount),date);
 
-        boolean isSaved = foodPaymentModel.save(foodPaymentDto);
+        boolean isSaved = foodPaymentBO.saveFoodPayment(foodPaymentDto);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION,"Food Payment Saved").show();
@@ -116,7 +118,7 @@ public class AddFoodPaymentController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = foodPaymentModel.getNextId();
+        String nextId = foodPaymentBO.getNextFoodPaymentId();
         lblPaymentId.setText(nextId);
     }
 }

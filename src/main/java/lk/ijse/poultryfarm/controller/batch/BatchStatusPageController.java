@@ -9,11 +9,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.ChickStatusBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
 import lk.ijse.poultryfarm.dto.tm.BatchStatusTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,12 +31,13 @@ public class BatchStatusPageController implements Initializable {
     public TableColumn<BatchStatusTm,String> colDate;
     public TableColumn<BatchStatusTm,Integer> colChickDeaths;
 
-    private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+    ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
+
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnDelete;
 
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
     public JFXButton btnReset;
     public JFXComboBox<String> searchBatchId;
 
@@ -68,7 +70,7 @@ public class BatchStatusPageController implements Initializable {
             btnSearch.setDisable(true);
 
             searchBatchId.getItems().clear();
-            searchBatchId.setItems(chickBatchModel.getAllBatchIds());
+            searchBatchId.setItems(chickBatchBO.getAllBatchIds());
 
             loadTableData();
             inputSearch.clear();
@@ -79,7 +81,7 @@ public class BatchStatusPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<ChickStatusDto> chickBatchDtos = chickStatusModel.getAll();
+        ArrayList<ChickStatusDto> chickBatchDtos = chickStatusBO.getAllChickStatus();
         ObservableList<BatchStatusTm> batchStatusTms = FXCollections.observableArrayList();
 
         for (ChickStatusDto chickStatusDto : chickBatchDtos) {
@@ -96,7 +98,7 @@ public class BatchStatusPageController implements Initializable {
 
     public void batchStatusSearchOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<ChickStatusDto> chickBatchDtos = chickStatusModel.search(inputSearch.getText());
+            ArrayList<ChickStatusDto> chickBatchDtos = chickStatusBO.searchChickStatus(inputSearch.getText());
             ObservableList<BatchStatusTm> batchStatusTms = FXCollections.observableArrayList();
 
             for (ChickStatusDto chickStatusDto : chickBatchDtos) {
@@ -142,7 +144,7 @@ public class BatchStatusPageController implements Initializable {
 
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 try {
-                    boolean isDeleted = chickStatusModel.delete(selectedBatchStatusId);
+                    boolean isDeleted = chickStatusBO.deleteChickStatus(selectedBatchStatusId);
 
                     if (isDeleted) {
                         new Alert(Alert.AlertType.INFORMATION, "Batch status deleted successfully").show();

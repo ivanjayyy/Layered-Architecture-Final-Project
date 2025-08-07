@@ -9,7 +9,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.DailyAttendanceBO;
+import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
+import lk.ijse.poultryfarm.bo.custom.SalaryBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.SalaryDto;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
@@ -30,10 +35,10 @@ public class AddSalaryController implements Initializable {
 
     private final String patternAmount = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final SalaryDAOImpl salaryModel = new SalaryDAOImpl();
-    private final DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-    private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
+    SalaryBO salaryBO = (SalaryBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALARY);
+    DailyAttendanceBO dailyAttendanceBO = (DailyAttendanceBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.DAILY_ATTENDANCE);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.EMPLOYEE);
 
     public void saveSalaryOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String salaryId = lblSalaryId.getText();
@@ -42,7 +47,7 @@ public class AddSalaryController implements Initializable {
         String date = inputDate.getValue().toString();
 
         SalaryDto salaryDto = new SalaryDto(salaryId,employeeId,Double.parseDouble(amount),date);
-        boolean isSaved = salaryModel.save(salaryDto);
+        boolean isSaved = salaryBO.saveSalary(salaryDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Salary Saved").show();
@@ -86,10 +91,10 @@ public class AddSalaryController implements Initializable {
             String employeeId = EmployeeDetailsPageController.selectedEmployeeId;
             lblEmployeeId.setText(employeeId);
 
-            String currentBatchId = chickBatchModel.getCurrentBatchId();
-            int attendanceCount = dailyAttendanceModel.countAttendance(employeeId,currentBatchId);
+            String currentBatchId = chickBatchBO.getCurrentBatchId();
+            int attendanceCount = dailyAttendanceBO.countAttendance(employeeId,currentBatchId);
 
-            double dailyWage = employeeModel.getDailyWage(employeeId);
+            double dailyWage = employeeBO.getDailyWage(employeeId);
             double salary = dailyWage * attendanceCount;
             inputAmount.setText(String.valueOf(salary));
 
@@ -101,7 +106,7 @@ public class AddSalaryController implements Initializable {
 
     private void loadNextId() {
         try {
-            String nextId = salaryModel.getNextId();
+            String nextId = salaryBO.getNextSalaryId();
             lblSalaryId.setText(nextId);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

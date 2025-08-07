@@ -10,7 +10,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.FoodBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
 
 import java.net.URL;
@@ -22,7 +24,8 @@ public class FoodInventoryPageController implements Initializable {
     public Label lblFinisherFood;
     public static String globalFoodId;
 
-    private final FoodDAOImpl foodModel = new FoodDAOImpl();
+    FoodBO foodBO = (FoodBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD);
+
     public JFXButton btnBoosterConsume;
     public JFXButton btnBoosterOrder;
     public JFXButton btnStarterConsume;
@@ -78,9 +81,9 @@ public class FoodInventoryPageController implements Initializable {
 
     private void resetPage() {
         try {
-            String boosterRemain = foodModel.foodInventory("F001");
-            String starterRemain = foodModel.foodInventory("F002");
-            String finisherRemain = foodModel.foodInventory("F003");
+            String boosterRemain = foodBO.foodInventory("F001");
+            String starterRemain = foodBO.foodInventory("F002");
+            String finisherRemain = foodBO.foodInventory("F003");
 
             lblBoosterFood.setText(boosterRemain);
             lblStarterFood.setText(starterRemain);

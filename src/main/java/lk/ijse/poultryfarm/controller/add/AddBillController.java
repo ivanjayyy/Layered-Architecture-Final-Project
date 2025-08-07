@@ -10,10 +10,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.BillBO;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.BillDto;
-import lk.ijse.poultryfarm.dao.custom.impl.BillDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -29,8 +30,8 @@ public class AddBillController implements Initializable {
 
     private final String patternPaidAmount = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final BillDAOImpl billModel = new BillDAOImpl();
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
+    BillBO billBO = (BillBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.BILL);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public void saveBatchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String batchId = lblBatchId.getValue();
@@ -39,7 +40,7 @@ public class AddBillController implements Initializable {
         String paidAmount = inputPaidAmount.getText();
         String paidDate = inputPaidDate.getValue().toString();
 
-        int isDuplicate = billModel.billPaidStatus(batchId, billVariant);
+        int isDuplicate = billBO.billPaidStatus(batchId, billVariant);
 
         if(isDuplicate != 0) {
             new Alert(Alert.AlertType.ERROR,"Duplicate Bill.").show();
@@ -48,7 +49,7 @@ public class AddBillController implements Initializable {
 
         BillDto billDto = new BillDto(batchId,billId,billVariant,Double.parseDouble(paidAmount),paidDate);
 
-            boolean isSaved = billModel.save(billDto);
+            boolean isSaved = billBO.saveBill(billDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Bill Saved Successfully").show();
@@ -98,18 +99,18 @@ public class AddBillController implements Initializable {
     }
 
     private void loadBatchId() throws SQLException, ClassNotFoundException {
-        String currentBatchId = chickBatchModel.getCurrentBatchId();
+        String currentBatchId = chickBatchBO.getCurrentBatchId();
 
         if (currentBatchId != null) {
             lblBatchId.setValue(currentBatchId);
-            lblBatchId.setItems(chickBatchModel.getAllBatchIds());
+            lblBatchId.setItems(chickBatchBO.getAllBatchIds());
         }else {
             new Alert(Alert.AlertType.WARNING,"No Chicken Batch Exists. Please add a new chicken batch first.").show();
         }
     }
 
     public void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = billModel.getNextId();
+        String nextId = billBO.getNextBillId();
         lblBillId.setText(nextId);
     }
 }

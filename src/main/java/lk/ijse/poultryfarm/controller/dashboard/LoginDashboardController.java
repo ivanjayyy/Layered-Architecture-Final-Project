@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 
 public class LoginDashboardController implements Initializable {

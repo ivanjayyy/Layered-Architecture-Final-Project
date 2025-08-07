@@ -10,7 +10,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.FoodBO;
+import lk.ijse.poultryfarm.bo.custom.FoodConsumptionBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
 import lk.ijse.poultryfarm.dao.custom.impl.*;
@@ -30,9 +34,9 @@ public class AddFoodConsumptionController implements Initializable {
     public TextField inputConsumption;
     public JFXButton btnSave;
 
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-    private final FoodConsumptionDAOImpl foodConsumptionModel = new FoodConsumptionDAOImpl();
-    private final FoodDAOImpl foodModel = new FoodDAOImpl();
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+    FoodConsumptionBO foodConsumptionBO = (FoodConsumptionBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_CONSUMPTION);
+    FoodBO foodBO = (FoodBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD);
 
     private final String patternConsumption = "^[0-9]+(\\.[0-9]{1,2})?$";
 
@@ -43,12 +47,12 @@ public class AddFoodConsumptionController implements Initializable {
         String foodId = lblFoodId.getText();
         String consumption = inputConsumption.getText();
 
-        double foodRemain = Double.parseDouble(foodModel.foodInventory(foodId));
+        double foodRemain = Double.parseDouble(foodBO.foodInventory(foodId));
         double foodConsumed = Double.parseDouble(consumption);
         boolean canConsume = foodRemain >= foodConsumed;
 
-        String selectedBatchArrivedDate = chickBatchModel.search(batchId).getFirst().getDate();
-        int selectedBatchTotalChicks = chickBatchModel.search(batchId).getFirst().getChickTotal();
+        String selectedBatchArrivedDate = chickBatchBO.searchChickBatch(batchId).getFirst().getDate();
+        int selectedBatchTotalChicks = chickBatchBO.searchChickBatch(batchId).getFirst().getChickTotal();
 
         LocalDate givenDate = LocalDate.parse(selectedBatchArrivedDate);
         LocalDate today = LocalDate.now();
@@ -99,14 +103,14 @@ public class AddFoodConsumptionController implements Initializable {
                     Double.parseDouble(consumption)
             );
 
-            boolean isSaved = foodConsumptionModel.save(foodConsumptionDto);
+            boolean isSaved = foodConsumptionBO.saveFoodConsumption(foodConsumptionDto);
 
             if (isSaved) {
-                double fRemain = Double.parseDouble(foodModel.foodInventory(foodId));
+                double fRemain = Double.parseDouble(foodBO.foodInventory(foodId));
 
                 if (fRemain < 200) {
                     String subject = "Food Shortage in the Inventory.";
-                    String message = "Food '" + foodModel.getFoodName(foodId) + "' is Low in the Inventory. Please Order them Immediately.";
+                    String message = "Food '" + foodBO.getFoodName(foodId) + "' is Low in the Inventory. Please Order them Immediately.";
                     ForgotPasswordController.sendMail(subject, message);
                 }
 
@@ -158,16 +162,16 @@ public class AddFoodConsumptionController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = foodConsumptionModel.getNextId();
+        String nextId = foodConsumptionBO.getNextFoodConsumptionId();
         lblConsumptionId.setText(nextId);
     }
 
     private void loadBatchId() throws SQLException, ClassNotFoundException {
-        String currentBatchId = chickBatchModel.getCurrentBatchId();
+        String currentBatchId = chickBatchBO.getCurrentBatchId();
 
         if (currentBatchId != null) {
             lblBatchId.setValue(currentBatchId);
-            lblBatchId.setItems(chickBatchModel.getAllBatchIds());
+            lblBatchId.setItems(chickBatchBO.getAllBatchIds());
         }else {
             new Alert(Alert.AlertType.WARNING,"No Chicken Batch Exists. Please add a new chicken batch first.").show();
         }

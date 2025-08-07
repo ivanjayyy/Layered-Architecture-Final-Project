@@ -12,7 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.OwnerBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 import lk.ijse.poultryfarm.util.EnterKeyAction;
 
@@ -29,14 +31,14 @@ public class LoginPageController implements Initializable {
     public TextField inputUsername;
     public JFXButton btnForgotPassword;
 
-    OwnerDAOImpl ownerModel = new OwnerDAOImpl();
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
 
     public void goAppWindowOnAction(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         String txtUsername = inputUsername.getText();
         String txtPassword = inputPassword.getText();
 
-        String username = ownerModel.ownerUsername();
-        String password = ownerModel.ownerPassword();
+        String username = ownerBO.ownerUsername();
+        String password = ownerBO.ownerPassword();
 
         if(txtUsername.equals(username) && txtPassword.equals(password)) {
             Stage currentstage = (Stage) btnLogin.getScene().getWindow();

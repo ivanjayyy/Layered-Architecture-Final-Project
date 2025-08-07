@@ -11,7 +11,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.FoodPaymentBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dto.tm.FoodPaymentTm;
 import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
@@ -30,7 +32,8 @@ public class FoodPaymentPageController implements Initializable {
     public TableColumn<FoodPaymentTm,Double> colAmount;
     public TableColumn<FoodPaymentTm,String> colDate;
 
-    private final FoodPaymentDAOImpl foodPaymentModel = new FoodPaymentDAOImpl();
+    FoodPaymentBO foodPaymentBO = (FoodPaymentBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_PAYMENT);
+
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -75,7 +78,7 @@ public class FoodPaymentPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.getAll();
+        ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentBO.getAllFoodPayment();
         ObservableList<FoodPaymentTm> foodPaymentTms = FXCollections.observableArrayList();
         for (FoodPaymentDto foodPaymentDto : foodPaymentDtos) {
             FoodPaymentTm foodPaymentTm = new FoodPaymentTm(
@@ -92,7 +95,7 @@ public class FoodPaymentPageController implements Initializable {
 
     public void searchFoodPaymentOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentModel.search(inputSearch.getText());
+            ArrayList<FoodPaymentDto> foodPaymentDtos = foodPaymentBO.searchFoodPayment(inputSearch.getText());
             ObservableList<FoodPaymentTm> foodPaymentTms = FXCollections.observableArrayList();
             for (FoodPaymentDto foodPaymentDto : foodPaymentDtos) {
                 FoodPaymentTm foodPaymentTm = new FoodPaymentTm(

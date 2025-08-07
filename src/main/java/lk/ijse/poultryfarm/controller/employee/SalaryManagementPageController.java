@@ -9,7 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.SalaryBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.SalaryDto;
 import lk.ijse.poultryfarm.dto.tm.SalaryManagementTm;
 import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
@@ -28,7 +30,8 @@ public class SalaryManagementPageController implements Initializable {
     public TableColumn<SalaryManagementTm,Double> colSalary;
     public TableColumn<SalaryManagementTm,String> colDate;
 
-    private final SalaryDAOImpl salaryModel = new SalaryDAOImpl();
+    SalaryBO salaryBO = (SalaryBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALARY);
+
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -76,7 +79,7 @@ public class SalaryManagementPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<SalaryDto> salaryDtos = salaryModel.getAll();
+        ArrayList<SalaryDto> salaryDtos = salaryBO.getAllSalary();
         ObservableList<SalaryManagementTm> salaryManagementTms = FXCollections.observableArrayList();
         for (SalaryDto salaryDto : salaryDtos) {
             SalaryManagementTm salaryManagementTm = new SalaryManagementTm(
@@ -92,7 +95,7 @@ public class SalaryManagementPageController implements Initializable {
 
     public void searchSalaryOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<SalaryDto> salaryDtos = salaryModel.search(inputSearch.getText());
+            ArrayList<SalaryDto> salaryDtos = salaryBO.searchSalary(inputSearch.getText());
             ObservableList<SalaryManagementTm> salaryManagementTms = FXCollections.observableArrayList();
             for (SalaryDto salaryDto : salaryDtos) {
                 SalaryManagementTm salaryManagementTm = new SalaryManagementTm(
@@ -130,7 +133,7 @@ public class SalaryManagementPageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = salaryModel.delete(selectedSalaryId);
+                boolean isDeleted = salaryBO.deleteSalary(selectedSalaryId);
 
                 if(isDeleted){
                     new Alert(Alert.AlertType.INFORMATION,"Salary Deleted successfully").show();

@@ -9,12 +9,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.ChickStatusBO;
+import lk.ijse.poultryfarm.bo.custom.SaleBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.controller.batch.BatchSalePageController;
 import lk.ijse.poultryfarm.dto.SaleDto;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
@@ -34,7 +36,9 @@ public class AddSaleController implements Initializable {
     private final String patternChicksSold = "^[0-9]+$";
     private final String patternTotalSale = "^(0|[1-9][0-9]*)?(\\.[0-9]{1,2})?$";
 
-    private final SaleDAOImpl saleModel = new SaleDAOImpl();
+    SaleBO saleModel = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
+    ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public int originalSoldChicks;
 
@@ -47,12 +51,9 @@ public class AddSaleController implements Initializable {
 
         SaleDto saleDto = new SaleDto(batchId,saleId,Double.parseDouble(totalSale),date,Integer.parseInt(chicksSold));
 
-        ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
-        ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-
-        int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);
+        int sumOfChickDead = chickStatusBO.selectedBatchChickDeaths(batchId);
         int chicksSoldToday = Integer.parseInt(chicksSold);
-        int batchChickTotal = chickBatchModel.getChickTotal(batchId);
+        int batchChickTotal = chickBatchBO.getChickTotal(batchId);
 
         SaleDAOImpl saleModel = new SaleDAOImpl();
         int totalSold = saleModel.selectedBatchTotalSold(batchId);
@@ -185,7 +186,7 @@ public class AddSaleController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = saleModel.getNextId();
+        String nextId = saleModel.getNextSaleId();
         lblSaleId.setText(nextId);
     }
 }

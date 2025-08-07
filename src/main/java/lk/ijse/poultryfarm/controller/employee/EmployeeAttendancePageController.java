@@ -8,7 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.DailyAttendanceBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.DailyAttendanceDto;
 import lk.ijse.poultryfarm.dto.tm.EmployeeAttendanceTm;
 import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
@@ -29,7 +31,7 @@ public class EmployeeAttendancePageController implements Initializable {
     public TableColumn<EmployeeAttendanceTm,String> colEmployeeId;
     public TableColumn<EmployeeAttendanceTm,Boolean> colAttendance;
 
-    private final DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
+    DailyAttendanceBO dailyAttendanceBO = (DailyAttendanceBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.DAILY_ATTENDANCE);
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -75,7 +77,7 @@ public class EmployeeAttendancePageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<DailyAttendanceDto> dailyAttendanceDtos = dailyAttendanceModel.getAll();
+        ArrayList<DailyAttendanceDto> dailyAttendanceDtos = dailyAttendanceBO.getAllAttendance();
         ObservableList<EmployeeAttendanceTm> employeeAttendanceTms = FXCollections.observableArrayList();
 
         for (DailyAttendanceDto dailyAttendanceDto : dailyAttendanceDtos) {
@@ -93,7 +95,7 @@ public class EmployeeAttendancePageController implements Initializable {
 
     public void AttendanceSearchOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<DailyAttendanceDto> dailyAttendanceDtos = dailyAttendanceModel.search(inputSearch.getText());
+            ArrayList<DailyAttendanceDto> dailyAttendanceDtos = dailyAttendanceBO.searchAttendance(inputSearch.getText());
             ObservableList<EmployeeAttendanceTm> employeeAttendanceTms = FXCollections.observableArrayList();
 
             for (DailyAttendanceDto dailyAttendanceDto : dailyAttendanceDtos) {
@@ -129,7 +131,7 @@ public class EmployeeAttendancePageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = dailyAttendanceModel.delete(selectedAttendanceId);
+                boolean isDeleted = dailyAttendanceBO.deleteAttendance(selectedAttendanceId);
 
                 if(isDeleted){
                     new Alert(Alert.AlertType.INFORMATION,"Attendance deleted successfully").show();

@@ -11,7 +11,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.FoodConsumptionBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.tm.FoodConsumptionTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
@@ -30,7 +32,8 @@ public class FoodConsumptionPageController implements Initializable {
     public TableColumn<FoodConsumptionTm,String> colFoodId;
     public TableColumn<FoodConsumptionTm,Double> colConsumption;
 
-    private final FoodConsumptionDAOImpl foodConsumptionModel = new FoodConsumptionDAOImpl();
+    FoodConsumptionBO foodConsumptionBO = (FoodConsumptionBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_CONSUMPTION);
+
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnReset;
@@ -76,7 +79,7 @@ public class FoodConsumptionPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.getAll();
+        ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionBO.getAllFoodConsumption();
         ObservableList<FoodConsumptionTm> foodConsumptionTms = FXCollections.observableArrayList();
 
         for (FoodConsumptionDto foodConsumptionDto : foodConsumptionDtos) {
@@ -94,7 +97,7 @@ public class FoodConsumptionPageController implements Initializable {
 
     public void searchFoodConsumptionOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionModel.search(inputSearch.getText());
+            ArrayList<FoodConsumptionDto> foodConsumptionDtos = foodConsumptionBO.searchFoodConsumption(inputSearch.getText());
             ObservableList<FoodConsumptionTm> foodConsumptionTms = FXCollections.observableArrayList();
 
             for (FoodConsumptionDto foodConsumptionDto : foodConsumptionDtos) {

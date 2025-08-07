@@ -19,7 +19,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
 
 import java.awt.image.BufferedImage;

@@ -6,7 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.OwnerBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
 import lk.ijse.poultryfarm.dto.OwnerDto;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
@@ -23,7 +25,8 @@ public class CreateAccountPageController implements Initializable {
     public TextField inputPassword;
     public TextField inputEmail;
 
-    private final OwnerDAOImpl ownerModel = new OwnerDAOImpl();
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
+
     public JFXButton btnCreate;
 
     private final String patternUsername = "^[a-zA-Z0-9_-]+$";
@@ -37,7 +40,7 @@ public class CreateAccountPageController implements Initializable {
     public Label lblPasswordDifficulty;
 
     public void createAccountOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        if (ownerModel.hasOwner()) {
+        if (ownerBO.hasOwner()) {
             new Alert(Alert.AlertType.ERROR, "Already have a User Account. Please Login.").show();
             return;
         }
@@ -58,7 +61,7 @@ public class CreateAccountPageController implements Initializable {
 
         } else {
             try {
-                boolean isSaved = ownerModel.save(ownerDto);
+                boolean isSaved = ownerBO.saveOwner(ownerDto);
                 resetPage();
 
                 if(isSaved) {

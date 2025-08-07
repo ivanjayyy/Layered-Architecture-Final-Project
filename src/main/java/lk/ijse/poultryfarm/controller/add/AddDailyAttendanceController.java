@@ -9,7 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.DailyAttendanceBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.DailyAttendanceDto;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
@@ -27,8 +30,8 @@ public class AddDailyAttendanceController implements Initializable {
     public JFXComboBox<Boolean> inputAttendance;
     public JFXButton btnSave;
     
-    private final DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
+    DailyAttendanceBO dailyAttendanceBO = (DailyAttendanceBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.DAILY_ATTENDANCE);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public void saveDailyAttendanceOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String batchId = lblBatchId.getText();
@@ -37,11 +40,11 @@ public class AddDailyAttendanceController implements Initializable {
         String employeeId = lblEmployeeId.getText();
         String attendance = inputAttendance.getValue().toString();
 
-        int todayAttendanceCount = dailyAttendanceModel.checkAttendance(date, employeeId);
+        int todayAttendanceCount = dailyAttendanceBO.checkAttendance(date, employeeId);
 
         if(todayAttendanceCount == 0){
             DailyAttendanceDto dailyAttendanceDto = new DailyAttendanceDto(batchId, attendanceId, date, employeeId, Boolean.parseBoolean(attendance));
-            boolean isSaved = dailyAttendanceModel.save(dailyAttendanceDto);
+            boolean isSaved = dailyAttendanceBO.saveAttendance(dailyAttendanceDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Daily Attendance Saved").show();
@@ -76,7 +79,7 @@ public class AddDailyAttendanceController implements Initializable {
     }
 
     private void loadBatchId() throws SQLException, ClassNotFoundException {
-        String currentBatchId = chickBatchModel.getCurrentBatchId();
+        String currentBatchId = chickBatchBO.getCurrentBatchId();
 
         if (currentBatchId != null) {
             lblBatchId.setText(currentBatchId);
@@ -86,7 +89,7 @@ public class AddDailyAttendanceController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = dailyAttendanceModel.getNextId();
+        String nextId = dailyAttendanceBO.getNextAttendanceId();
         lblAttendanceId.setText(nextId);
     }
 }

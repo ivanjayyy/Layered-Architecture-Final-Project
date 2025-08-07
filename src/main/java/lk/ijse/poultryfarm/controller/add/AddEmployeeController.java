@@ -9,7 +9,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
@@ -31,7 +33,7 @@ public class AddEmployeeController implements Initializable {
     private final String patternContact = "^0\\d{9}$";
     private final String patternDailyWage = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.EMPLOYEE);
 
     public void saveBatchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String employeeId = lblEmployeeId.getText();
@@ -43,12 +45,12 @@ public class AddEmployeeController implements Initializable {
         EmployeeDto employeeDto = new EmployeeDto(employeeId,name,fullTime,contact,Double.parseDouble(dailyWage));
 
         if(EmployeeDetailsPageController.updateEmployee){
-            if(employeeModel.checkContactDuplicate(contact) > 1) {
+            if(employeeBO.checkContactDuplicate(contact) > 1) {
                 new Alert(Alert.AlertType.ERROR,"Contact number already exists").show();
                 return;
             }
 
-            boolean isUpdated = employeeModel.update(employeeDto);
+            boolean isUpdated = employeeBO.updateEmployee(employeeDto);
 
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION,"Employee has been updated successfully").show();
@@ -62,12 +64,12 @@ public class AddEmployeeController implements Initializable {
             }
 
         }else {
-            if(employeeModel.checkContactDuplicate(contact) > 0) {
+            if(employeeBO.checkContactDuplicate(contact) > 0) {
                 new Alert(Alert.AlertType.ERROR,"Contact number already exists").show();
                 return;
             }
 
-            boolean isSaved = employeeModel.save(employeeDto);
+            boolean isSaved = employeeBO.saveEmployee(employeeDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Employee Saved Successfully").show();
@@ -187,7 +189,7 @@ public class AddEmployeeController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = employeeModel.getNextId();
+        String nextId = employeeBO.getNextEmployeeId();
         lblEmployeeId.setText(nextId);
     }
 }

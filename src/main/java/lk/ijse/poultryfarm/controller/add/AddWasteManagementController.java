@@ -10,11 +10,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.WasteManagementBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.WasteManagementPageController;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.WasteManagementDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,8 +31,8 @@ public class AddWasteManagementController implements Initializable {
 
     private final String patternTotalSale = "^[0-9]+(\\.[0-9]{1,2})?$";
 
-    private final WasteManagementDAOImpl wasteManagementModel = new WasteManagementDAOImpl();
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
+    WasteManagementBO wasteManagementBO = (WasteManagementBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.WASTE_MANAGEMENT);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public void saveBatchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String batchId = lblBatchId.getValue();
@@ -42,7 +43,7 @@ public class AddWasteManagementController implements Initializable {
         WasteManagementDto wasteManagementDto = new WasteManagementDto(batchId,wasteId,Double.parseDouble(totalSale),date);
 
         if(WasteManagementPageController.updateWaste){
-            boolean isUpdate = wasteManagementModel.update(wasteManagementDto);
+            boolean isUpdate = wasteManagementBO.updateWaste(wasteManagementDto);
 
             if(isUpdate){
                 new Alert(Alert.AlertType.INFORMATION,"Waste Updated Successfully").show();
@@ -52,7 +53,7 @@ public class AddWasteManagementController implements Initializable {
                 new Alert(Alert.AlertType.ERROR,"Waste Update Failed").show();
             }
         } else {
-            boolean isSaved = wasteManagementModel.save(wasteManagementDto);
+            boolean isSaved = wasteManagementBO.saveWaste(wasteManagementDto);
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Waste Saved Successfully").show();
@@ -110,18 +111,18 @@ public class AddWasteManagementController implements Initializable {
     }
 
     private void loadBatchId() throws SQLException, ClassNotFoundException {
-        String currentBatchId = chickBatchModel.getCurrentBatchId();
+        String currentBatchId = chickBatchBO.getCurrentBatchId();
 
         if (currentBatchId != null) {
             lblBatchId.setValue(currentBatchId);
-            lblBatchId.setItems(chickBatchModel.getAllBatchIds());
+            lblBatchId.setItems(chickBatchBO.getAllBatchIds());
         }else {
             new Alert(Alert.AlertType.WARNING,"No Chicken Batch Exists. Please add a new chicken batch first.").show();
         }
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = wasteManagementModel.getNextId();
+        String nextId = wasteManagementBO.getNextWasteId();
         lblWasteId.setText(nextId);
     }
 }

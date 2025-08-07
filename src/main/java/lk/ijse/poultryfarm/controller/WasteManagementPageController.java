@@ -14,10 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.WasteManagementBO;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
 import lk.ijse.poultryfarm.dto.tm.WasteManagementTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.WasteManagementDAOImpl;
+import lk.ijse.poultryfarm.util.ButtonScale;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +36,7 @@ public class WasteManagementPageController implements Initializable {
     public TableColumn<WasteManagementTm,Double> colTotalAmount;
     public TableColumn<WasteManagementTm,String> colSoldDate;
 
-    private final WasteManagementDAOImpl wasteManagementModel = new WasteManagementDAOImpl();
+    WasteManagementBO wasteManagementBO = (WasteManagementBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.WASTE_MANAGEMENT);
     public TextField inputSearch;
     public JFXButton btnSearch;
     public JFXButton btnDelete;
@@ -77,7 +79,7 @@ public class WasteManagementPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<WasteManagementDto> wasteManagementDtos = wasteManagementModel.getAll();
+        ArrayList<WasteManagementDto> wasteManagementDtos = wasteManagementBO.getAllWaste();
         ObservableList<WasteManagementTm> wasteManagementTms = FXCollections.observableArrayList();
         for (WasteManagementDto wasteManagementDto : wasteManagementDtos) {
             WasteManagementTm wasteManagementTm = new WasteManagementTm(
@@ -152,7 +154,7 @@ public class WasteManagementPageController implements Initializable {
 
     public void searchWasteOnAction(ActionEvent actionEvent) {
         try{
-            ArrayList<WasteManagementDto> wasteManagementDtos = wasteManagementModel.search(inputSearch.getText());
+            ArrayList<WasteManagementDto> wasteManagementDtos = wasteManagementBO.searchWaste(inputSearch.getText());
             ObservableList<WasteManagementTm> wasteManagementTms = FXCollections.observableArrayList();
             for (WasteManagementDto wasteManagementDto : wasteManagementDtos) {
                 WasteManagementTm wasteManagementTm = new WasteManagementTm(
@@ -176,7 +178,7 @@ public class WasteManagementPageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = wasteManagementModel.delete(selectedWasteId);
+                boolean isDeleted = wasteManagementBO.deleteWaste(selectedWasteId);
 
                 if (isDeleted) {
                     new Alert(Alert.AlertType.INFORMATION,"Waste deleted successfully").show();

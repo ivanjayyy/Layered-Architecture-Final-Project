@@ -14,10 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.BillBO;
 import lk.ijse.poultryfarm.dto.BillDto;
 import lk.ijse.poultryfarm.dto.tm.BillManagementTm;
-import lk.ijse.poultryfarm.dao.custom.impl.BillDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
+import lk.ijse.poultryfarm.util.ButtonScale;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +42,7 @@ public class BillManagementPageController implements Initializable {
 
     public JFXButton btnDelete;
 
-    private final BillDAOImpl billModel = new BillDAOImpl();
+    BillBO billBO = (BillBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.BILL);
     public Label lblWaterBillStatus;
     public Label lblElecBillStatus;
     public JFXButton btnReset;
@@ -48,7 +50,7 @@ public class BillManagementPageController implements Initializable {
 
     public void searchBillOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<BillDto> billDtos = billModel.search(inputSearch.getText());
+            ArrayList<BillDto> billDtos = billBO.searchBill(inputSearch.getText());
             ObservableList<BillManagementTm> billManagementTms = FXCollections.observableArrayList();
             for (BillDto billDto : billDtos) {
                 BillManagementTm billManagementTm = new BillManagementTm(
@@ -106,7 +108,7 @@ public class BillManagementPageController implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
-                boolean isDeleted = billModel.delete(selectedBillId);
+                boolean isDeleted = billBO.deleteBill(selectedBillId);
 
                 if(isDeleted){
                     new Alert(Alert.AlertType.INFORMATION,"Bill deleted successfully").show();
@@ -184,7 +186,7 @@ public class BillManagementPageController implements Initializable {
         ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
         String currentBatchId = chickBatchModel.getCurrentBatchId();
-        int waterBillStatus = billModel.billPaidStatus(currentBatchId,"Water");
+        int waterBillStatus = billBO.billPaidStatus(currentBatchId,"Water");
 
         if(waterBillStatus == 1){
             lblWaterBillStatus.setText("Paid");
@@ -194,7 +196,7 @@ public class BillManagementPageController implements Initializable {
             new Alert(Alert.AlertType.ERROR,"Error in retrieving water bill status").show();
         }
 
-        int elecBillStatus = billModel.billPaidStatus(currentBatchId,"Electricity");
+        int elecBillStatus = billBO.billPaidStatus(currentBatchId,"Electricity");
 
         if(elecBillStatus == 1){
             lblElecBillStatus.setText("Paid");
@@ -206,7 +208,7 @@ public class BillManagementPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<BillDto> billDtos = billModel.getAll();
+        ArrayList<BillDto> billDtos = billBO.getAllBills();
         ObservableList<BillManagementTm> billManagementTms = FXCollections.observableArrayList();
         for (BillDto billDto : billDtos) {
             BillManagementTm billManagementTm = new BillManagementTm(

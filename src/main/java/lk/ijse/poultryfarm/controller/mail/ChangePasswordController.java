@@ -8,7 +8,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.OwnerBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 
 import java.net.URL;
@@ -27,10 +29,11 @@ public class ChangePasswordController implements Initializable {
     private final String pattern3WeakPassword = "^[A-Za-z0-9]+$";
     private final String patternNormalPassword = "^[A-Za-z0-9]{6,}$";
 
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
+
     public void savePasswordOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if(inputPassword.getText().equals(confirmPassword.getText())){
-            OwnerDAOImpl ownerModel = new OwnerDAOImpl();
-            boolean isSuccess = ownerModel.changePassword(inputPassword.getText());
+            boolean isSuccess = ownerBO.changePassword(inputPassword.getText());
 
             if(isSuccess) {
                 new Alert(Alert.AlertType.INFORMATION, "Password Updated Successfully").show();

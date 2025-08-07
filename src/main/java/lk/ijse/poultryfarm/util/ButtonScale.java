@@ -1,4 +1,4 @@
-package lk.ijse.poultryfarm.controller;
+package lk.ijse.poultryfarm.util;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.ScaleTransition;

@@ -14,7 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dto.tm.EmployeeDetailsTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
@@ -39,7 +41,8 @@ public class EmployeeDetailsPageController implements Initializable {
     public TableColumn<EmployeeDetailsTm,String> colContact;
     public TableColumn<EmployeeDetailsTm,Double> colDailyWage;
 
-    private final EmployeeDAOImpl employeeModel = new EmployeeDAOImpl();
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.EMPLOYEE);
+
     public JFXButton btnSalary;
     public JFXButton btnAttendance;
     public JFXButton btnUpdate;
@@ -56,7 +59,7 @@ public class EmployeeDetailsPageController implements Initializable {
 
     public void searchEmployeeOnAction(ActionEvent actionEvent) {
         try {
-            ArrayList<EmployeeDto> employeeDtos = employeeModel.search(inputSearch.getText());
+            ArrayList<EmployeeDto> employeeDtos = employeeBO.searchEmployee(inputSearch.getText());
             ObservableList<EmployeeDetailsTm> employeeDetailsTms = FXCollections.observableArrayList();
             for (EmployeeDto employeeDto : employeeDtos) {
                 EmployeeDetailsTm employeeDetailsTm = new EmployeeDetailsTm(
@@ -112,7 +115,7 @@ public class EmployeeDetailsPageController implements Initializable {
     }
 
     private void loadTableData() throws SQLException, ClassNotFoundException {
-        ArrayList<EmployeeDto> employeeDtos = employeeModel.getAll();
+        ArrayList<EmployeeDto> employeeDtos = employeeBO.getAllEmployees();
         ObservableList<EmployeeDetailsTm> employeeDetailsTms = FXCollections.observableArrayList();
         for (EmployeeDto employeeDto : employeeDtos) {
             EmployeeDetailsTm employeeDetailsTm = new EmployeeDetailsTm(

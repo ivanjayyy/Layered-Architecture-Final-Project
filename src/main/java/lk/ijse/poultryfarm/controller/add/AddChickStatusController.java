@@ -9,11 +9,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.ChickStatusBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
 import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
@@ -27,8 +28,8 @@ public class AddChickStatusController implements Initializable {
     public TextField inputChicksDead;
     public JFXButton btnSave;
 
-    private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
-    private final ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
+    ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     private final String patternChicksDead = "^[0-9]+$";
 
@@ -38,16 +39,16 @@ public class AddChickStatusController implements Initializable {
         String checkedDate = inputCheckedDate.getValue().toString();
         String chicksDead = inputChicksDead.getText();
 
-        int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);
+        int sumOfChickDead = chickStatusBO.selectedBatchChickDeaths(batchId);
         int chickDeadToday = Integer.parseInt(chicksDead);
-        int batchChickTotal = chickBatchModel.getChickTotal(batchId);
+        int batchChickTotal = chickBatchBO.getChickTotal(batchId);
 
         SaleDAOImpl saleModel = new SaleDAOImpl();
         int totalSold = saleModel.selectedBatchTotalSold(batchId);
 
         boolean isValid = (chickDeadToday + sumOfChickDead) <= (batchChickTotal-totalSold);
 
-        int todayChickStatusCheckedCount = chickStatusModel.checkStatus(checkedDate,batchId);
+        int todayChickStatusCheckedCount = chickStatusBO.checkStatus(checkedDate,batchId);
 
         if(todayChickStatusCheckedCount != 0) {
             new Alert(Alert.AlertType.ERROR, "Error: You have already checked today's chick status.").show();
@@ -61,7 +62,7 @@ public class AddChickStatusController implements Initializable {
                         return;
                     }
 
-                    boolean isSaved = chickStatusModel.save(chickStatusDto);
+                    boolean isSaved = chickStatusBO.saveChickStatus(chickStatusDto);
 
                     if (isSaved) {
                         new Alert(Alert.AlertType.INFORMATION, "Chick Status Saved Successfully").show();
@@ -119,7 +120,7 @@ public class AddChickStatusController implements Initializable {
     }
 
     private void loadNextId() throws SQLException, ClassNotFoundException {
-        String nextId = chickStatusModel.getNextId();
+        String nextId = chickStatusBO.getNextChickStatusId();
         lblChickStatusId.setText(nextId);
     }
 }

@@ -14,8 +14,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-import lk.ijse.poultryfarm.controller.ButtonScale;
-import lk.ijse.poultryfarm.controller.TextFieldLimiter;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.OwnerBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
+import lk.ijse.poultryfarm.util.TextFieldLimiter;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 
 import javax.mail.*;
@@ -54,13 +56,13 @@ public class ForgotPasswordController implements Initializable {
 
     static int code;
 
-    OwnerDAOImpl ownerModel = new OwnerDAOImpl();
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
 
     public void resendEmailOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         Random random = new Random();
         code = 100000 + random.nextInt(900000);
 
-        String username = ownerModel.ownerUsername();
+        String username = ownerBO.ownerUsername();
 
         String subject = "Change Password Verification Code";
         String messageText = "Dear "+username+",\nYour verification code is: " + code;
@@ -140,7 +142,7 @@ public class ForgotPasswordController implements Initializable {
 
         String username;
         try {
-            username = ownerModel.ownerUsername();
+            username = ownerBO.ownerUsername();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

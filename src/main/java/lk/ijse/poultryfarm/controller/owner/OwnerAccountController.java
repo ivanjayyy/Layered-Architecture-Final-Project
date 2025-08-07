@@ -7,7 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import lk.ijse.poultryfarm.controller.ButtonScale;
+import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.OwnerBO;
+import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.OwnerDto;
 import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 import lk.ijse.poultryfarm.util.EnterKeyAction;
@@ -34,7 +36,7 @@ public class OwnerAccountController implements Initializable {
     private final String pattern3WeakPassword = "^[A-Za-z0-9]+$";
     private final String patternNormalPassword = "^[A-Za-z0-9]{6,}$";
 
-    OwnerDAOImpl ownerModel = new OwnerDAOImpl();
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
 
     public void updateOwnerOnAction(ActionEvent actionEvent) {
         if (btnUpdateOwner.getText().equals("UPDATE")) {
@@ -47,7 +49,7 @@ public class OwnerAccountController implements Initializable {
             OwnerDto ownerDto = new OwnerDto(ownerId,fullName,username,password,email);
 
             try {
-                boolean isUpdated = ownerModel.update(ownerDto);
+                boolean isUpdated = ownerBO.updateOwner(ownerDto);
 
                 if(isUpdated) {
                     new Alert(Alert.AlertType.INFORMATION,"Account Updated Successfully").show();
@@ -91,7 +93,7 @@ public class OwnerAccountController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
-            OwnerDto ownerDto = ownerModel.getOwner();
+            OwnerDto ownerDto = ownerBO.getOwner();
 
             if(ownerDto != null) {
                 inputFullName.setText(ownerDto.getName());

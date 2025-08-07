@@ -1,4 +1,4 @@
-package lk.ijse.poultryfarm.controller;
+package lk.ijse.poultryfarm.util;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
