@@ -18,11 +18,6 @@ public class ChickStatusBOImpl implements ChickStatusBO {
     }
 
     @Override
-    public boolean updateChickStatus(ChickStatusDto chickStatusDto) throws SQLException, ClassNotFoundException {
-        return chickStatusDAO.update(new ChickStatus(chickStatusDto.getBatchId(),chickStatusDto.getChickStatusId(),chickStatusDto.getDate(),chickStatusDto.getChicksDead()));
-    }
-
-    @Override
     public boolean deleteChickStatus(String chickStatusId) throws SQLException, ClassNotFoundException {
         return chickStatusDAO.delete(chickStatusId);
     }

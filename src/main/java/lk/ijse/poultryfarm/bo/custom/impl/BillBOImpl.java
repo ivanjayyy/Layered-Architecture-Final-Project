@@ -18,11 +18,6 @@ public class BillBOImpl implements BillBO {
     }
 
     @Override
-    public boolean updateBill(BillDto billDto) throws SQLException, ClassNotFoundException {
-        return billDAO.update(new Bill(billDto.getBatchId(),billDto.getBillId(),billDto.getBillVariant(),billDto.getAmount(),billDto.getDate()));
-    }
-
-    @Override
     public boolean deleteBill(String billId) throws SQLException, ClassNotFoundException {
         return billDAO.delete(billId);
     }

@@ -2,12 +2,10 @@ package lk.ijse.poultryfarm.bo.custom.impl;
 
 import lk.ijse.poultryfarm.bo.custom.WasteManagementBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
-import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.WasteManagementDAO;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
 import lk.ijse.poultryfarm.entity.WasteManagement;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

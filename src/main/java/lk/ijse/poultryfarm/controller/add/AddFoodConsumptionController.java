@@ -103,7 +103,7 @@ public class AddFoodConsumptionController implements Initializable {
                     Double.parseDouble(consumption)
             );
 
-            boolean isSaved = foodConsumptionBO.saveFoodConsumption(foodConsumptionDto);
+            boolean isSaved = foodConsumptionBO.foodConsumption(foodConsumptionDto);
 
             if (isSaved) {
                 double fRemain = Double.parseDouble(foodBO.foodInventory(foodId));

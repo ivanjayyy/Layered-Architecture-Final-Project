@@ -12,12 +12,17 @@ import java.util.ArrayList;
 public class DailyAttendanceDAOImpl implements DailyAttendanceDAO {
 
     @Override
+    public ArrayList<DailyAttendance> getAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
     public boolean save(DailyAttendance dailyAttendanceDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO daily_attendance VALUES (?,?,?,?,?)", dailyAttendanceDto.getBatchId(),dailyAttendanceDto.getAttendanceId(),dailyAttendanceDto.getDate(),dailyAttendanceDto.getEmployeeId(),dailyAttendanceDto.isAttendance());
     }
 
     @Override
-    public boolean update(DailyAttendance employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(DailyAttendance dailyAttendance) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -28,43 +33,6 @@ public class DailyAttendanceDAOImpl implements DailyAttendanceDAO {
             return resultSet.getInt(1);
         }
         return 0;
-    }
-
-    @Override
-    public ArrayList<DailyAttendance> search(String date) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT da.batch_id, da.attendance_id, da.date, e.name, da.attendance FROM daily_attendance da JOIN employee e ON da.employee_id = e.employee_id WHERE da.date = ? ORDER BY da.attendance_id DESC", date);
-        ArrayList<DailyAttendance> dailyAttendanceDtos = new ArrayList<>();
-
-        while (resultSet.next()) {
-            DailyAttendance dailyAttendanceDto = new DailyAttendance(
-                    resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getBoolean(5)
-            );
-            dailyAttendanceDtos.add(dailyAttendanceDto);
-        }
-        return dailyAttendanceDtos;
-    }
-
-    @Override
-    public ArrayList<DailyAttendance> getAll() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT da.batch_id, da.attendance_id, da.date, e.name, da.attendance FROM daily_attendance da JOIN employee e ON da.employee_id = e.employee_id ORDER BY da.attendance_id DESC");
-
-        ArrayList<DailyAttendance> dailyAttendanceDtos = new ArrayList<>();
-
-        while (resultSet.next()) {
-            DailyAttendance dailyAttendanceDto = new DailyAttendance(
-                    resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getBoolean(5)
-            );
-            dailyAttendanceDtos.add(dailyAttendanceDto);
-        }
-        return dailyAttendanceDtos;
     }
 
     @Override
@@ -95,5 +63,10 @@ public class DailyAttendanceDAOImpl implements DailyAttendanceDAO {
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM daily_attendance WHERE attendance_id = ?", id);
+    }
+
+    @Override
+    public ArrayList<DailyAttendance> search(String billVariant) throws SQLException, ClassNotFoundException {
+        return null;
     }
 }

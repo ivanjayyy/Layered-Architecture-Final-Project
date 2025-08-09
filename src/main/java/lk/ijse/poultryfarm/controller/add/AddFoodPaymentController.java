@@ -43,7 +43,7 @@ public class AddFoodPaymentController implements Initializable {
 
         FoodPaymentDto foodPaymentDto = new FoodPaymentDto(paymentId,foodId,Double.parseDouble(quantity),Double.parseDouble(paidAmount),date);
 
-        boolean isSaved = foodPaymentBO.saveFoodPayment(foodPaymentDto);
+        boolean isSaved = foodPaymentBO.foodPayment(foodPaymentDto);
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION,"Food Payment Saved").show();

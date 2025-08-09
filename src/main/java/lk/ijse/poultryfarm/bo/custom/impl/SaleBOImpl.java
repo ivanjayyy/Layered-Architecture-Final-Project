@@ -2,12 +2,10 @@ package lk.ijse.poultryfarm.bo.custom.impl;
 
 import lk.ijse.poultryfarm.bo.custom.SaleBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
-import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.SaleDAO;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.entity.Sale;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

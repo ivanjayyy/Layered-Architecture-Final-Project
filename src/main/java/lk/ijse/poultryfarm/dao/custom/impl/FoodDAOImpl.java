@@ -5,6 +5,7 @@ import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.FoodDto;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.entity.Food;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,17 +54,17 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public ArrayList<FoodDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Food> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(FoodDto billDto) throws SQLException, ClassNotFoundException {
+    public boolean save(Food billDto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(FoodDto employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(Food food) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -73,7 +74,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public ArrayList<FoodDto> search(String billVariant) throws SQLException, ClassNotFoundException {
+    public ArrayList<Food> search(String billVariant) throws SQLException, ClassNotFoundException {
         return null;
     }
 

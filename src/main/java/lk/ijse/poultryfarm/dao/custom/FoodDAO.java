@@ -4,10 +4,11 @@ import lk.ijse.poultryfarm.dao.CrudDAO;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.FoodDto;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
+import lk.ijse.poultryfarm.entity.Food;
 
 import java.sql.SQLException;
 
-public interface FoodDAO extends CrudDAO<FoodDto> {
+public interface FoodDAO extends CrudDAO<Food> {
     boolean updateAfterFoodConsumption(FoodConsumptionDto foodConsumptionDto) throws SQLException, ClassNotFoundException;
     boolean updateAfterFoodOrder(FoodPaymentDto foodPaymentDto) throws SQLException, ClassNotFoundException;
     String foodInventory(String foodId) throws SQLException, ClassNotFoundException;

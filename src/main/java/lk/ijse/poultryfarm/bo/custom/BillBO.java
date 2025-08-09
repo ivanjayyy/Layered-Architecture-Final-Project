@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public interface BillBO extends SuperBO {
     boolean saveBill(BillDto billDto) throws SQLException, ClassNotFoundException ;
-    boolean updateBill(BillDto billDto) throws SQLException, ClassNotFoundException ;
     boolean deleteBill(String billId) throws SQLException, ClassNotFoundException ;
     ArrayList<BillDto> searchBill(String billVariant) throws SQLException, ClassNotFoundException ;
     ArrayList<BillDto> getAllBills() throws SQLException, ClassNotFoundException ;

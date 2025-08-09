@@ -19,16 +19,6 @@ public class ChickBatchBOImpl implements ChickBatchBO {
     }
 
     @Override
-    public boolean updateChickBatch(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.update(new ChickBatch(chickBatchDto.getBatchId(),chickBatchDto.getChickTotal(),chickBatchDto.getPayment(),chickBatchDto.getDate()));
-    }
-
-    @Override
-    public boolean deleteChickBatch(String billId) throws SQLException, ClassNotFoundException {
-        return chickBatchDAO.delete(billId);
-    }
-
-    @Override
     public ArrayList<ChickBatchDto> searchChickBatch(String batchId) throws SQLException, ClassNotFoundException {
         ArrayList<ChickBatch> entity = chickBatchDAO.search(batchId);
         ArrayList<ChickBatchDto> dto = new ArrayList<>();

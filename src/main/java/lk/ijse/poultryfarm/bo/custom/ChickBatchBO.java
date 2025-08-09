@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public interface ChickBatchBO extends SuperBO {
 
     boolean saveChickBatch(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException ;
-    boolean updateChickBatch(ChickBatchDto chickBatchDto) throws SQLException, ClassNotFoundException ;
-    boolean deleteChickBatch(String billId) throws SQLException, ClassNotFoundException ;
     ArrayList<ChickBatchDto> searchChickBatch(String batchId) throws SQLException, ClassNotFoundException ;
     ArrayList<ChickBatchDto> getAllChickBatches() throws SQLException, ClassNotFoundException ;
     String getNextChickBatchId() throws SQLException, ClassNotFoundException ;

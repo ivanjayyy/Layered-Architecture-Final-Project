@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public interface SalaryBO extends SuperBO {
     boolean saveSalary(SalaryDto salaryDto) throws SQLException, ClassNotFoundException ;
-    boolean updateSalary(SalaryDto employeeDto) throws SQLException, ClassNotFoundException ;
     boolean deleteSalary(String salaryId) throws SQLException, ClassNotFoundException ;
     ArrayList<SalaryDto> searchSalary(String employeeId) throws SQLException, ClassNotFoundException ;
     ArrayList<SalaryDto> getAllSalary() throws SQLException, ClassNotFoundException ;

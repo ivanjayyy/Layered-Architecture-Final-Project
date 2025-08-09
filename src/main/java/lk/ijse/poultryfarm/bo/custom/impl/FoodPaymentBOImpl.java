@@ -2,43 +2,66 @@ package lk.ijse.poultryfarm.bo.custom.impl;
 
 import lk.ijse.poultryfarm.bo.custom.FoodPaymentBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
-import lk.ijse.poultryfarm.dao.SQLUtil;
+import lk.ijse.poultryfarm.dao.custom.FoodDAO;
 import lk.ijse.poultryfarm.dao.custom.FoodPaymentDAO;
+import lk.ijse.poultryfarm.dao.custom.QueryDAO;
 import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
 import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
+import lk.ijse.poultryfarm.entity.FoodPayment;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FoodPaymentBOImpl implements FoodPaymentBO {
     FoodPaymentDAO foodPaymentDAO = (FoodPaymentDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.FOOD_PAYMENT);
+    FoodDAO foodDAO = (FoodDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.FOOD);
+    QueryDAO queryDAO = (QueryDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.QUERY);
 
     @Override
-    public boolean saveFoodPayment(FoodPaymentDto foodPaymentDto) throws SQLException, ClassNotFoundException {
-        return foodPaymentDAO.save(foodPaymentDto);
-    }
+    public boolean foodPayment(FoodPaymentDto foodPaymentDto) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        try {
+            connection.setAutoCommit(false);
+            boolean isSaved = foodPaymentDAO.save(new FoodPayment(foodPaymentDto.getFoodPaymentId(),foodPaymentDto.getFoodId(),foodPaymentDto.getQuantity(),foodPaymentDto.getPayAmount(),foodPaymentDto.getDate()));
 
-    @Override
-    public boolean updateFoodPayment(FoodPaymentDto employeeDto) throws SQLException, ClassNotFoundException {
-        return foodPaymentDAO.update(employeeDto);
-    }
+            if (isSaved) {
+                boolean isUpdated = foodDAO.updateAfterFoodOrder(foodPaymentDto);
 
-    @Override
-    public boolean deleteFoodPayment(String billId) throws SQLException, ClassNotFoundException {
-        return foodPaymentDAO.delete(billId);
+                if (isUpdated) {
+                    connection.commit();
+                    return true;
+                }
+            }
+            connection.rollback();
+            return false;
+        } catch (Exception e) {
+            connection.rollback();
+            return false;
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     @Override
     public ArrayList<FoodPaymentDto> searchFoodPayment(String foodId) throws SQLException, ClassNotFoundException {
-        return foodPaymentDAO.search(foodId);
+        ArrayList<FoodPayment> entity = queryDAO.paymentSearch(foodId);
+        ArrayList<FoodPaymentDto> dto = new ArrayList<>();
+        for (FoodPayment entity1 : entity) {
+            dto.add(new FoodPaymentDto(entity1.getFoodPaymentId(),entity1.getFoodId(),entity1.getQuantity(),entity1.getPayAmount(),entity1.getDate()));
+        }
+        return dto;
     }
 
     @Override
     public ArrayList<FoodPaymentDto> getAllFoodPayment() throws SQLException, ClassNotFoundException {
-        return foodPaymentDAO.getAll();
+        ArrayList<FoodPayment> entity = queryDAO.paymentGetAll();
+        ArrayList<FoodPaymentDto> dto = new ArrayList<>();
+        for (FoodPayment entity1 : entity) {
+            dto.add(new FoodPaymentDto(entity1.getFoodPaymentId(),entity1.getFoodId(),entity1.getQuantity(),entity1.getPayAmount(),entity1.getDate()));
+        }
+        return dto;
     }
 
     @Override

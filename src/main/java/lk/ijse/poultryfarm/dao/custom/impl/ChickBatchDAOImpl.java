@@ -19,7 +19,7 @@ public class ChickBatchDAOImpl implements ChickBatchDAO {
     }
 
     @Override
-    public boolean update(ChickBatch employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(ChickBatch chickBatch) throws SQLException, ClassNotFoundException {
         return false;
     }
 

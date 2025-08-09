@@ -12,10 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface FoodPaymentBO extends SuperBO {
-    boolean saveFoodPayment(FoodPaymentDto foodPaymentDto) throws SQLException, ClassNotFoundException ;
-    boolean updateFoodPayment(FoodPaymentDto employeeDto) throws SQLException, ClassNotFoundException ;
-    boolean deleteFoodPayment(String billId) throws SQLException, ClassNotFoundException ;
     ArrayList<FoodPaymentDto> searchFoodPayment(String foodId) throws SQLException, ClassNotFoundException ;
     ArrayList<FoodPaymentDto> getAllFoodPayment() throws SQLException, ClassNotFoundException ;
     String getNextFoodPaymentId() throws SQLException, ClassNotFoundException ;
+    boolean foodPayment(FoodPaymentDto foodPaymentDto) throws SQLException, ClassNotFoundException;
 }

@@ -17,7 +17,7 @@ public class ChickStatusDAOImpl implements ChickStatusDAO {
     }
 
     @Override
-    public boolean update(ChickStatus employeeDto) throws SQLException, ClassNotFoundException {
+    public boolean update(ChickStatus chickStatus) throws SQLException, ClassNotFoundException {
         return false;
     }
 
