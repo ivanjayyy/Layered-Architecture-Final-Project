@@ -1,7 +1,6 @@
 package lk.ijse.poultryfarm.dao.custom.impl;
 
 import lk.ijse.poultryfarm.dao.custom.BillDAO;
-import lk.ijse.poultryfarm.dto.BillDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.entity.Bill;
 

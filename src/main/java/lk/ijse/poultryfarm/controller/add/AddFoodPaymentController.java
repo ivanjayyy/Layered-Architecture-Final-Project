@@ -14,7 +14,6 @@ import lk.ijse.poultryfarm.bo.custom.FoodPaymentBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodPaymentDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

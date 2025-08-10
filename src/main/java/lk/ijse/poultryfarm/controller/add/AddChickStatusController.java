@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.bo.custom.ChickStatusBO;
+import lk.ijse.poultryfarm.bo.custom.SaleBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.batch.BatchDetailsPageController;
 import lk.ijse.poultryfarm.dto.ChickStatusDto;
-import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,6 +30,7 @@ public class AddChickStatusController implements Initializable {
 
     ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
     ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+    SaleBO saleBO = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
 
     private final String patternChicksDead = "^[0-9]+$";
 
@@ -43,8 +44,7 @@ public class AddChickStatusController implements Initializable {
         int chickDeadToday = Integer.parseInt(chicksDead);
         int batchChickTotal = chickBatchBO.getChickTotal(batchId);
 
-        SaleDAOImpl saleModel = new SaleDAOImpl();
-        int totalSold = saleModel.selectedBatchTotalSold(batchId);
+        int totalSold = saleBO.selectedBatchTotalSold(batchId);
 
         boolean isValid = (chickDeadToday + sumOfChickDead) <= (batchChickTotal-totalSold);
 

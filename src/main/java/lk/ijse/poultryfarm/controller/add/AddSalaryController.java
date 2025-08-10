@@ -17,10 +17,6 @@ import lk.ijse.poultryfarm.bo.custom.SalaryBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.SalaryDto;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.SalaryDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.OwnerBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
-import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 import lk.ijse.poultryfarm.util.EnterKeyAction;
 
 import java.io.IOException;

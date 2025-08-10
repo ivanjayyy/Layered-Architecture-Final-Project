@@ -1,12 +1,9 @@
 package lk.ijse.poultryfarm.dao.custom.impl;
 
 import lk.ijse.poultryfarm.dao.custom.FoodConsumptionDAO;
-import lk.ijse.poultryfarm.database.DBConnection;
-import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.entity.FoodConsumption;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

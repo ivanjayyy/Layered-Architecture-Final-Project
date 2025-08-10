@@ -15,10 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.bo.custom.WasteManagementBO;
 import lk.ijse.poultryfarm.dto.WasteManagementDto;
 import lk.ijse.poultryfarm.dto.tm.WasteManagementTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.util.ButtonScale;
 
 import java.io.IOException;
@@ -37,6 +37,7 @@ public class WasteManagementPageController implements Initializable {
     public TableColumn<WasteManagementTm,String> colSoldDate;
 
     WasteManagementBO wasteManagementBO = (WasteManagementBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.WASTE_MANAGEMENT);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public TextField inputSearch;
     public JFXButton btnSearch;
@@ -69,9 +70,8 @@ public class WasteManagementPageController implements Initializable {
            inputSearch.clear();
            btnSearch.setDisable(true);
 
-           ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
            searchBatchId.getItems().clear();
-           searchBatchId.setItems(chickBatchModel.getAllBatchIds());
+           searchBatchId.setItems(chickBatchBO.getAllBatchIds());
 
         } catch (Exception e) {
            e.printStackTrace();
@@ -111,8 +111,7 @@ public class WasteManagementPageController implements Initializable {
 
                 btnAdd.setDisable(true);
 
-                ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-                String currentBatchId = chickBatchModel.getCurrentBatchId();
+                String currentBatchId = chickBatchBO.getCurrentBatchId();
 
                 if(selectedBatchId.equals(currentBatchId)){
                     btnDelete.setDisable(false);

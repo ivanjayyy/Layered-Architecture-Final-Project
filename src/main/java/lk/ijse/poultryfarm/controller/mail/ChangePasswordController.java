@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.OwnerBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
-import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

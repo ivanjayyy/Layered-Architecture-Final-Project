@@ -7,7 +7,6 @@ import lk.ijse.poultryfarm.dto.OwnerDto;
 import lk.ijse.poultryfarm.entity.Owner;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class OwnerBOImpl implements OwnerBO {
     OwnerDAO ownerDAO = (OwnerDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.OWNER);
@@ -40,6 +39,11 @@ public class OwnerBOImpl implements OwnerBO {
     @Override
     public boolean hasOwner() throws SQLException, ClassNotFoundException {
         return ownerDAO.hasOwner();
+    }
+
+    @Override
+    public String getEmail() throws SQLException, ClassNotFoundException {
+        return ownerDAO.getEmail();
     }
 
     @Override

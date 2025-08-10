@@ -18,7 +18,6 @@ import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.OwnerBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.util.TextFieldLimiter;
-import lk.ijse.poultryfarm.dao.custom.impl.OwnerDAOImpl;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -43,6 +42,8 @@ public class ForgotPasswordController implements Initializable {
     public AnchorPane ancForgotPassword;
     public ImageView imageView;
 
+    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
+
     private static final int FRAME_WIDTH = 184;
     private static final int FRAME_HEIGHT = 184;
     private static final int COLUMNS = 2;
@@ -53,10 +54,7 @@ public class ForgotPasswordController implements Initializable {
 
     private Timeline timeline;
     private int timeLeft;
-
     static int code;
-
-    OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
 
     public void resendEmailOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         Random random = new Random();
@@ -107,8 +105,8 @@ public class ForgotPasswordController implements Initializable {
         });
 
         try {
-            OwnerDAOImpl ownerModel = new OwnerDAOImpl();
-            String toEmail = ownerModel.getEmail();
+            OwnerBO ownerBO = (OwnerBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.OWNER);
+            String toEmail = ownerBO.getEmail();
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(fromEmail));
             message.setRecipients(

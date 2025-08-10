@@ -16,9 +16,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.BillBO;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.dto.BillDto;
 import lk.ijse.poultryfarm.dto.tm.BillManagementTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 import lk.ijse.poultryfarm.util.ButtonScale;
 
 import java.io.IOException;
@@ -43,6 +43,8 @@ public class BillManagementPageController implements Initializable {
     public JFXButton btnDelete;
 
     BillBO billBO = (BillBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.BILL);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+
     public Label lblWaterBillStatus;
     public Label lblElecBillStatus;
     public JFXButton btnReset;
@@ -85,8 +87,7 @@ public class BillManagementPageController implements Initializable {
                 selectedBillAmount = selectedItem.getAmount();
                 selectedBillDate = selectedItem.getDate();
 
-                ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
-                String currentBatchId = chickBatchModel.getCurrentBatchId();
+                String currentBatchId = chickBatchBO.getCurrentBatchId();
 
                 if(selectedBatchId.equals(currentBatchId)){
                     btnDelete.setDisable(false);
@@ -183,9 +184,8 @@ public class BillManagementPageController implements Initializable {
     }
 
     private void loadData() throws SQLException, ClassNotFoundException {
-        ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
 
-        String currentBatchId = chickBatchModel.getCurrentBatchId();
+        String currentBatchId = chickBatchBO.getCurrentBatchId();
         int waterBillStatus = billBO.billPaidStatus(currentBatchId,"Water");
 
         if(waterBillStatus == 1){

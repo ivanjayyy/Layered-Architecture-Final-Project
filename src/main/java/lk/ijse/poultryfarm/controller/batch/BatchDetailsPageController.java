@@ -16,12 +16,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
+import lk.ijse.poultryfarm.bo.custom.ChickStatusBO;
+import lk.ijse.poultryfarm.bo.custom.SaleBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
 import lk.ijse.poultryfarm.dto.tm.BatchDetailsTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickStatusDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.SaleDAOImpl;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -61,11 +61,12 @@ public class BatchDetailsPageController implements Initializable {
     public TableColumn<BatchDetailsTm,String> colArrivedDate;
 
     ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
+    SaleBO saleBO = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
+    ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
+
     public JFXButton btnSale;
     public JFXButton btnStatus;
 
-    private final SaleDAOImpl saleModel = new SaleDAOImpl();
-    private final ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
     public JFXButton btnReset;
     public JFXComboBox<String> searchBatchId;
     public Label lblBatchSold;
@@ -135,9 +136,9 @@ public class BatchDetailsPageController implements Initializable {
     }
 
     private void loadBatchDetails() throws SQLException, ClassNotFoundException {
-        int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(selectedBatchId);
+        int sumOfChickDead = chickStatusBO.selectedBatchChickDeaths(selectedBatchId);
         int batchChicksLeft = (selectedBatchTotalChicks - sumOfChickDead);
-        int totalChickSold = saleModel.selectedBatchTotalSold(selectedBatchId);
+        int totalChickSold = saleBO.selectedBatchTotalSold(selectedBatchId);
 
         selectedBatchChicksLeft = (batchChicksLeft - totalChickSold);
         boolean isSold = (batchChicksLeft == totalChickSold);
@@ -228,7 +229,7 @@ public class BatchDetailsPageController implements Initializable {
                 btnSale.setDisable(false);
             }
 
-            int checkTodayStatusCount = chickStatusModel.checkStatus(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), selectedBatchId);
+            int checkTodayStatusCount = chickStatusBO.checkStatus(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), selectedBatchId);
             if(lblBatchSold.getText().equals("NO") && daysBetween <= 30 && checkTodayStatusCount == 0) {
                 btnStatus.setDisable(false);
             }

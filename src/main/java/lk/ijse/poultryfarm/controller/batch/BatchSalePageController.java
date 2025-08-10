@@ -15,11 +15,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.bo.custom.SaleBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.SaleDto;
 import lk.ijse.poultryfarm.dto.tm.BatchSaleTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -45,6 +45,7 @@ public class BatchSalePageController implements Initializable {
     public TableColumn<BatchSaleTm,Integer> colChicksSold;
 
     SaleBO saleBO = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
 
     public TextField inputSearch;
     public JFXButton btnSearch;
@@ -86,9 +87,8 @@ public class BatchSalePageController implements Initializable {
             loadTableData();
             inputSearch.clear();
 
-            ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
             searchBatchId.getItems().clear();
-            searchBatchId.setItems(chickBatchModel.getAllBatchIds());
+            searchBatchId.setItems(chickBatchBO.getAllBatchIds());
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,12 +1,15 @@
 package lk.ijse.poultryfarm.bo.custom.impl;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
+import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dao.custom.EmployeeDAO;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.entity.Employee;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -61,5 +64,10 @@ public class EmployeeBOImpl implements EmployeeBO {
     @Override
     public int checkContactDuplicate(String contact) throws SQLException, ClassNotFoundException {
         return employeeDAO.checkContactDuplicate(contact);
+    }
+
+    @Override
+    public ObservableList<String> getAllEmployeeNames() throws SQLException, ClassNotFoundException {
+        return employeeDAO.getAllEmployeeNames();
     }
 }

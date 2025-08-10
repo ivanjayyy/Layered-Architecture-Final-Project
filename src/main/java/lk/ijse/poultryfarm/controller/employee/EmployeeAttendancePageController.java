@@ -13,7 +13,6 @@ import lk.ijse.poultryfarm.bo.custom.DailyAttendanceBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.DailyAttendanceDto;
 import lk.ijse.poultryfarm.dto.tm.EmployeeAttendanceTm;
-import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

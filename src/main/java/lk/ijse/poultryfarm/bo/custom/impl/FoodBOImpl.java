@@ -3,12 +3,7 @@ package lk.ijse.poultryfarm.bo.custom.impl;
 import lk.ijse.poultryfarm.bo.custom.FoodBO;
 import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.custom.FoodDAO;
-import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
-import lk.ijse.poultryfarm.dto.FoodDto;
-import lk.ijse.poultryfarm.dto.FoodPaymentDto;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class FoodBOImpl implements FoodBO {
     FoodDAO foodDAO = (FoodDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.FOOD);
@@ -21,5 +16,10 @@ public class FoodBOImpl implements FoodBO {
     @Override
     public String getFoodName(String id) throws SQLException, ClassNotFoundException {
         return foodDAO.getFoodName(id);
+    }
+
+    @Override
+    public String getFoodId(String foodName) throws SQLException, ClassNotFoundException{
+        return foodDAO.getFoodId(foodName);
     }
 }

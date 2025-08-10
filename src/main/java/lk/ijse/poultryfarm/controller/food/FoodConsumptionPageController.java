@@ -12,12 +12,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
 import lk.ijse.poultryfarm.bo.custom.FoodConsumptionBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.dto.tm.FoodConsumptionTm;
-import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodConsumptionDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,6 +31,7 @@ public class FoodConsumptionPageController implements Initializable {
     public TableColumn<FoodConsumptionTm,String> colFoodId;
     public TableColumn<FoodConsumptionTm,Double> colConsumption;
 
+    ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
     FoodConsumptionBO foodConsumptionBO = (FoodConsumptionBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_CONSUMPTION);
 
     public TextField inputSearch;
@@ -68,9 +68,8 @@ public class FoodConsumptionPageController implements Initializable {
             inputSearch.clear();
             btnSearch.setDisable(true);
 
-            ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
             searchBatchId.getItems().clear();
-            searchBatchId.setItems(chickBatchModel.getAllBatchIds());
+            searchBatchId.setItems(chickBatchBO.getAllBatchIds());
 
         } catch (Exception e) {
             e.printStackTrace();

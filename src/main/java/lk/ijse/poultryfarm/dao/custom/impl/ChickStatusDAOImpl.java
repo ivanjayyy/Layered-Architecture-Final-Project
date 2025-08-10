@@ -1,7 +1,6 @@
 package lk.ijse.poultryfarm.dao.custom.impl;
 
 import lk.ijse.poultryfarm.dao.custom.ChickStatusDAO;
-import lk.ijse.poultryfarm.dto.ChickStatusDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.entity.ChickStatus;
 

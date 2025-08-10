@@ -2,7 +2,6 @@ package lk.ijse.poultryfarm.dao.custom.impl;
 
 import lk.ijse.poultryfarm.dao.custom.FoodDAO;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
-import lk.ijse.poultryfarm.dto.FoodDto;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.entity.Food;

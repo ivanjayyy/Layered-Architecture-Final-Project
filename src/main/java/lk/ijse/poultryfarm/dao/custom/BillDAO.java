@@ -1,7 +1,6 @@
 package lk.ijse.poultryfarm.dao.custom;
 
 import lk.ijse.poultryfarm.dao.CrudDAO;
-import lk.ijse.poultryfarm.dto.BillDto;
 import lk.ijse.poultryfarm.entity.Bill;
 
 import java.sql.SQLException;

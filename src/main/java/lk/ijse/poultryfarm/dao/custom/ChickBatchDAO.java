@@ -2,7 +2,6 @@ package lk.ijse.poultryfarm.dao.custom;
 
 import javafx.collections.ObservableList;
 import lk.ijse.poultryfarm.dao.CrudDAO;
-import lk.ijse.poultryfarm.dto.ChickBatchDto;
 import lk.ijse.poultryfarm.entity.ChickBatch;
 
 import java.sql.SQLException;

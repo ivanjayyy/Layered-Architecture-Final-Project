@@ -11,13 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
-import lk.ijse.poultryfarm.bo.custom.ChickBatchBO;
-import lk.ijse.poultryfarm.bo.custom.FoodBO;
-import lk.ijse.poultryfarm.bo.custom.FoodConsumptionBO;
+import lk.ijse.poultryfarm.bo.custom.*;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.food.FoodInventoryPageController;
 import lk.ijse.poultryfarm.controller.mail.ForgotPasswordController;
-import lk.ijse.poultryfarm.dao.custom.impl.*;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 
 import java.net.URL;
@@ -37,6 +34,8 @@ public class AddFoodConsumptionController implements Initializable {
     ChickBatchBO chickBatchBO = (ChickBatchBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_BATCH);
     FoodConsumptionBO foodConsumptionBO = (FoodConsumptionBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_CONSUMPTION);
     FoodBO foodBO = (FoodBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD);
+    SaleBO saleBO = (SaleBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SALE);
+    ChickStatusBO chickStatusBO = (ChickStatusBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHICK_STATUS);
 
     private final String patternConsumption = "^[0-9]+(\\.[0-9]{1,2})?$";
 
@@ -80,12 +79,9 @@ public class AddFoodConsumptionController implements Initializable {
             return;
         }
 
-        ChickStatusDAOImpl chickStatusModel = new ChickStatusDAOImpl();
-        SaleDAOImpl saleModel = new SaleDAOImpl();
-
-        int sumOfChickDead = chickStatusModel.selectedBatchChickDeaths(batchId);
+        int sumOfChickDead = chickStatusBO.selectedBatchChickDeaths(batchId);
         int batchChicksLeft = (selectedBatchTotalChicks - sumOfChickDead);
-        int totalChickSold = saleModel.selectedBatchTotalSold(batchId);
+        int totalChickSold = saleBO.selectedBatchTotalSold(batchId);
 
         boolean isSold = (batchChicksLeft == totalChickSold);
 

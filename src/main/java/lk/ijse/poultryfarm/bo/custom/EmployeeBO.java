@@ -16,4 +16,5 @@ public interface EmployeeBO extends SuperBO {
     String getNextEmployeeId() throws SQLException, ClassNotFoundException ;
     String getEmployeeId(String name) throws SQLException, ClassNotFoundException ;
     int checkContactDuplicate(String contact) throws SQLException, ClassNotFoundException ;
-}
+    ObservableList<String> getAllEmployeeNames() throws SQLException, ClassNotFoundException ;
+    }

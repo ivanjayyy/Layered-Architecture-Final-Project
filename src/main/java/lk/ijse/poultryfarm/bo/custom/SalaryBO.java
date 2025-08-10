@@ -1,10 +1,8 @@
 package lk.ijse.poultryfarm.bo.custom;
 
 import lk.ijse.poultryfarm.bo.SuperBO;
-import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dto.SalaryDto;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

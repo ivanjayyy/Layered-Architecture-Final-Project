@@ -1,12 +1,9 @@
 package lk.ijse.poultryfarm.bo.custom;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lk.ijse.poultryfarm.bo.SuperBO;
-import lk.ijse.poultryfarm.dao.SQLUtil;
 import lk.ijse.poultryfarm.dto.ChickBatchDto;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

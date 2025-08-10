@@ -1,13 +1,8 @@
 package lk.ijse.poultryfarm.bo.custom;
 
 import lk.ijse.poultryfarm.bo.SuperBO;
-import lk.ijse.poultryfarm.dao.SQLUtil;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
-import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

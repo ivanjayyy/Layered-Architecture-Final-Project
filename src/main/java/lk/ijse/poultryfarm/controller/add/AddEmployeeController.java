@@ -14,7 +14,6 @@ import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.controller.employee.EmployeeDetailsPageController;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
-import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;

@@ -15,13 +15,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.DailyAttendanceBO;
 import lk.ijse.poultryfarm.bo.custom.EmployeeBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.EmployeeDto;
 import lk.ijse.poultryfarm.dto.tm.EmployeeDetailsTm;
 import lk.ijse.poultryfarm.dao.custom.impl.ChickBatchDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.DailyAttendanceDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.EmployeeDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,6 +41,7 @@ public class EmployeeDetailsPageController implements Initializable {
     public TableColumn<EmployeeDetailsTm,Double> colDailyWage;
 
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.EMPLOYEE);
+    DailyAttendanceBO dailyAttendanceBO = (DailyAttendanceBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.DAILY_ATTENDANCE);
 
     public JFXButton btnSalary;
     public JFXButton btnAttendance;
@@ -143,8 +143,7 @@ public class EmployeeDetailsPageController implements Initializable {
                 selectedEmployeeContact = selectedItem.getContact();
                 selectedEmployeeDailyWage = String.valueOf(selectedItem.getDailyWage());
 
-                DailyAttendanceDAOImpl dailyAttendanceModel = new DailyAttendanceDAOImpl();
-                if(dailyAttendanceModel.checkAttendance(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), selectedEmployeeId) == 0) {
+                if(dailyAttendanceBO.checkAttendance(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), selectedEmployeeId) == 0) {
                     btnAttendance.setDisable(false);
                 } else {
                     btnAttendance.setDisable(true);
@@ -152,7 +151,7 @@ public class EmployeeDetailsPageController implements Initializable {
 
                 ChickBatchDAOImpl chickBatchModel = new ChickBatchDAOImpl();
                 String currentBatchId = chickBatchModel.getCurrentBatchId();
-                int currentBatchAttendDays = dailyAttendanceModel.countAttendance(selectedEmployeeId,currentBatchId);
+                int currentBatchAttendDays = dailyAttendanceBO.countAttendance(selectedEmployeeId,currentBatchId);
 
                 if(currentBatchAttendDays > 0) {
                     btnSalary.setDisable(false);

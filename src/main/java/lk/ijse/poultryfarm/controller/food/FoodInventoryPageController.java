@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import lk.ijse.poultryfarm.bo.BOFactory;
 import lk.ijse.poultryfarm.bo.custom.FoodBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;

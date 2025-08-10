@@ -5,7 +5,6 @@ import lk.ijse.poultryfarm.dao.DAOFactory;
 import lk.ijse.poultryfarm.dao.custom.FoodConsumptionDAO;
 import lk.ijse.poultryfarm.dao.custom.FoodDAO;
 import lk.ijse.poultryfarm.dao.custom.QueryDAO;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
 import lk.ijse.poultryfarm.database.DBConnection;
 import lk.ijse.poultryfarm.dto.FoodConsumptionDto;
 import lk.ijse.poultryfarm.entity.FoodConsumption;

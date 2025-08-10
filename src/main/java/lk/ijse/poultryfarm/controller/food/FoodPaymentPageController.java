@@ -12,12 +12,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.poultryfarm.bo.BOFactory;
+import lk.ijse.poultryfarm.bo.custom.FoodBO;
 import lk.ijse.poultryfarm.bo.custom.FoodPaymentBO;
 import lk.ijse.poultryfarm.util.ButtonScale;
 import lk.ijse.poultryfarm.dto.FoodPaymentDto;
 import lk.ijse.poultryfarm.dto.tm.FoodPaymentTm;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodDAOImpl;
-import lk.ijse.poultryfarm.dao.custom.impl.FoodPaymentDAOImpl;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,6 +31,7 @@ public class FoodPaymentPageController implements Initializable {
     public TableColumn<FoodPaymentTm,Double> colAmount;
     public TableColumn<FoodPaymentTm,String> colDate;
 
+    FoodBO foodBO = (FoodBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD);
     FoodPaymentBO foodPaymentBO = (FoodPaymentBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.FOOD_PAYMENT);
 
     public TextField inputSearch;
@@ -122,7 +122,6 @@ public class FoodPaymentPageController implements Initializable {
         btnSearch.setDisable(false);
         String foodName = searchFoodName.getSelectionModel().getSelectedItem();
 
-        FoodDAOImpl foodModel = new FoodDAOImpl();
-        inputSearch.setText(foodModel.getFoodId(foodName));
+        inputSearch.setText(foodBO.getFoodId(foodName));
     }
 }
